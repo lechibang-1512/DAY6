@@ -420,7 +420,7 @@ Video Thô (Nexar/DADA/In-house, 30fps)
   8. Cut-in lộ 1/3 thân xe: Amodal Bbox, `motion_state = cut_in`, `in_lane`.
   9. Bóng phản chiếu đường ướt: CẤM GÁN.
   10. Decal quảng cáo hông xe buýt: CẤM GÁN.
-* **CVAT XML Config:** File cấu hình XML chuẩn hóa 6 labels và 8 attributes sẵn sàng import trực tiếp vào CVAT Task.
+* **CVAT Ops & Invariants:** Cờ `mutable: true` cho 8 thuộc tính động học (chống đè bẹp timeline track); Ánh xạ COCO $\to$ VinFast trong Nuclio YOLOv10; Bản đồ phím tắt `1-6`, `K` (Keyframe), `I` (Ignore).
 
 </div>
 </div>

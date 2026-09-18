@@ -487,116 +487,141 @@ Mọi quy định phân xử tranh chấp phải được văn bản hóa vào *
 
 ---
 
-### 4.7 Bản Đặc Tả Cấu Hình Máy Đọc Được Cho Nền Tảng CVAT (Machine-Readable CVAT Task XML)
+### 4.7 Bản Đặc Tả Triển Khai Kỹ Thuật Trên Nền Tảng CVAT (CVAT Machine-Readable Specs & Ops)
 
-Để triển khai tức thì trên máy chủ gán nhãn CVAT (Computer Vision Annotation Tool), cấu hình nhãn và thuộc tính được đóng gói thành tệp định dạng chuẩn XML sẵn sàng import trực tiếp:
+Để đưa các bản đặc tả nhãn vào vận hành thực tế mà không xảy ra lỗi gãy vỡ dữ liệu động học, Tổ C thiết lập cấu hình chuẩn trên nền tảng CVAT (Computer Vision Annotation Tool) bao gồm 4 cấu phần:
 
-```xml
-<annotations>
-  <version>1.1</version>
-  <!-- 1. LỚP NGƯỜI ĐI BỘ (VRU) -->
-  <label>
-    <name>Pedestrian</name>
-    <color>#FF0000</color>
-    <type>box</type>
-    <attributes>
-      <attribute><name>occlusion_level</name><type>select</type><values>0-25%|25-50%|50-80%|>80%</values><default>0-25%</default></attribute>
-      <attribute><name>truncated</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>lane_relation</name><type>radio</type><values>in_lane|near_lane|out_of_lane</values><default>out_of_lane</default></attribute>
-      <attribute><name>distance_band</name><type>radio</type><values>lt10m|10to25m|gt25m</values><default>gt25m</default></attribute>
-      <attribute><name>motion_state</name><type>select</type><values>static|along|crossing|cut_in</values><default>static</default></attribute>
-      <attribute><name>risk_status</name><type>select</type><values>normal|threatening|colliding|post_crash</values><default>normal</default></attribute>
-      <attribute><name>ignore</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>prelabel_modified</name><type>checkbox</type><default>false</default></attribute>
-    </attributes>
-  </label>
+#### 1. Tử Huyệt Kỹ Thuật Trong CVAT: Cờ Biến Thiên Thời Gian (`mutable: true`)
+Trong CVAT Track Mode, nếu một thuộc tính không được khai báo rõ `mutable: true`, CVAT sẽ mặc định xem thuộc tính đó là **bất biến xuyên suốt toàn bộ Track (Immutable/Track-level Attribute)**:
+*   *Hậu quả chết người:* Khi xe máy ban đầu chạy ở lề đường (`lane_relation: near_lane`), đến frame thứ 20 tạt đầu vào làn xe VinFast (`lane_relation: in_lane`). Nếu thuộc tính để `mutable: false`, việc annotator chọn `in_lane` ở frame 20 sẽ **đè bẹp toàn bộ 19 frames trước đó thành `in_lane`**! Điều này làm sai lệch hoàn toàn nhãn động học huấn luyện mạng phát hiện va chạm sớm.
+*   *Quy tắc Bất biến:* Toàn bộ 8 thuộc tính động học, không gian, rủi ro, che khuất và cờ kiểm soát (`occlusion_level`, `truncated`, `lane_relation`, `distance_band`, `motion_state`, `risk_status`, `ignore`, `prelabel_modified`) **BẮT BUỘC KHAI BÁO `<mutable>true</mutable>`** để lưu trữ giá trị độc lập trên từng Keyframe của Track!
 
-  <!-- 2. LỚP XE MÁY (VRU) -->
-  <label>
-    <name>Motorcycle</name>
-    <color>#FFA500</color>
-    <type>box</type>
-    <attributes>
-      <attribute><name>occlusion_level</name><type>select</type><values>0-25%|25-50%|50-80%|>80%</values><default>0-25%</default></attribute>
-      <attribute><name>truncated</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>lane_relation</name><type>radio</type><values>in_lane|near_lane|out_of_lane</values><default>near_lane</default></attribute>
-      <attribute><name>distance_band</name><type>radio</type><values>lt10m|10to25m|gt25m</values><default>10to25m</default></attribute>
-      <attribute><name>motion_state</name><type>select</type><values>along|cut_in|crossing|static</values><default>along</default></attribute>
-      <attribute><name>risk_status</name><type>select</type><values>normal|threatening|colliding|post_crash</values><default>normal</default></attribute>
-      <attribute><name>ignore</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>prelabel_modified</name><type>checkbox</type><default>false</default></attribute>
-    </attributes>
-  </label>
+#### 2. Bản Đặc Tả Định Dạng Chuẩn CVAT 2.x REST API (Raw JSON Specification)
+Được nạp trực tiếp qua CVAT REST API v2 (`POST /api/tasks/{id}`) hoặc dán vào giao diện UI Raw Label Constructor:
 
-  <!-- 3. LỚP XE ĐẠP (VRU) -->
-  <label>
-    <name>Bicycle</name>
-    <color>#FFFF00</color>
-    <type>box</type>
-    <attributes>
-      <attribute><name>occlusion_level</name><type>select</type><values>0-25%|25-50%|50-80%|>80%</values><default>0-25%</default></attribute>
-      <attribute><name>truncated</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>lane_relation</name><type>radio</type><values>in_lane|near_lane|out_of_lane</values><default>near_lane</default></attribute>
-      <attribute><name>distance_band</name><type>radio</type><values>lt10m|10to25m|gt25m</values><default>gt25m</default></attribute>
-      <attribute><name>motion_state</name><type>select</type><values>along|crossing|static|cut_in</values><default>along</default></attribute>
-      <attribute><name>risk_status</name><type>select</type><values>normal|threatening|colliding|post_crash</values><default>normal</default></attribute>
-      <attribute><name>ignore</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>prelabel_modified</name><type>checkbox</type><default>false</default></attribute>
-    </attributes>
-  </label>
-
-  <!-- 4. LỚP XE Ô TÔ CON -->
-  <label>
-    <name>Car</name>
-    <color>#0000FF</color>
-    <type>box</type>
-    <attributes>
-      <attribute><name>occlusion_level</name><type>select</type><values>0-25%|25-50%|50-80%|>80%</values><default>0-25%</default></attribute>
-      <attribute><name>truncated</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>lane_relation</name><type>radio</type><values>in_lane|near_lane|out_of_lane</values><default>in_lane</default></attribute>
-      <attribute><name>distance_band</name><type>radio</type><values>lt10m|10to25m|gt25m</values><default>10to25m</default></attribute>
-      <attribute><name>motion_state</name><type>select</type><values>along|static|crossing|cut_in</values><default>along</default></attribute>
-      <attribute><name>risk_status</name><type>select</type><values>normal|threatening|colliding|post_crash</values><default>normal</default></attribute>
-      <attribute><name>ignore</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>prelabel_modified</name><type>checkbox</type><default>false</default></attribute>
-    </attributes>
-  </label>
-
-  <!-- 5. LỚP XE TẢI, XE BUÝT, XE HẠNG NẶNG -->
-  <label>
-    <name>Bus_Truck</name>
-    <color>#800080</color>
-    <type>box</type>
-    <attributes>
-      <attribute><name>occlusion_level</name><type>select</type><values>0-25%|25-50%|50-80%|>80%</values><default>0-25%</default></attribute>
-      <attribute><name>truncated</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>lane_relation</name><type>radio</type><values>in_lane|near_lane|out_of_lane</values><default>in_lane</default></attribute>
-      <attribute><name>distance_band</name><type>radio</type><values>lt10m|10to25m|gt25m</values><default>gt25m</default></attribute>
-      <attribute><name>motion_state</name><type>select</type><values>along|static|cut_in|crossing</values><default>along</default></attribute>
-      <attribute><name>risk_status</name><type>select</type><values>normal|threatening|colliding|post_crash</values><default>normal</default></attribute>
-      <attribute><name>ignore</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>prelabel_modified</name><type>checkbox</type><default>false</default></attribute>
-    </attributes>
-  </label>
-
-  <!-- 6. LỚP VẬT CẢN BẤT THƯỜNG -->
-  <label>
-    <name>UNKNOWN_OBJECT</name>
-    <color>#808080</color>
-    <type>box</type>
-    <attributes>
-      <attribute><name>occlusion_level</name><type>select</type><values>0-25%|25-50%|50-80%|>80%</values><default>0-25%</default></attribute>
-      <attribute><name>truncated</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>lane_relation</name><type>radio</type><values>in_lane|near_lane|out_of_lane</values><default>in_lane</default></attribute>
-      <attribute><name>distance_band</name><type>radio</type><values>lt10m|10to25m|gt25m</values><default>lt10m</default></attribute>
-      <attribute><name>motion_state</name><type>select</type><values>static|crossing|along|cut_in</values><default>static</default></attribute>
-      <attribute><name>risk_status</name><type>select</type><values>normal|threatening|colliding|post_crash</values><default>normal</default></attribute>
-      <attribute><name>ignore</name><type>checkbox</type><default>false</default></attribute>
-      <attribute><name>prelabel_modified</name><type>checkbox</type><default>false</default></attribute>
-    </attributes>
-  </label>
-</annotations>
+```json
+[
+  {
+    "name": "Pedestrian",
+    "color": "#FF0000",
+    "type": "rectangle",
+    "attributes": [
+      {"name": "occlusion_level", "input_type": "select", "mutable": true, "values": ["0-25%", "25-50%", "50-80%", ">80%"], "default_value": "0-25%"},
+      {"name": "truncated", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "lane_relation", "input_type": "radio", "mutable": true, "values": ["in_lane", "near_lane", "out_of_lane"], "default_value": "out_of_lane"},
+      {"name": "distance_band", "input_type": "radio", "mutable": true, "values": ["lt10m", "10to25m", "gt25m"], "default_value": "gt25m"},
+      {"name": "motion_state", "input_type": "select", "mutable": true, "values": ["static", "along", "crossing", "cut_in"], "default_value": "static"},
+      {"name": "risk_status", "input_type": "select", "mutable": true, "values": ["normal", "threatening", "colliding", "post_crash"], "default_value": "normal"},
+      {"name": "ignore", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "prelabel_modified", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"}
+    ]
+  },
+  {
+    "name": "Motorcycle",
+    "color": "#FFA500",
+    "type": "rectangle",
+    "attributes": [
+      {"name": "occlusion_level", "input_type": "select", "mutable": true, "values": ["0-25%", "25-50%", "50-80%", ">80%"], "default_value": "0-25%"},
+      {"name": "truncated", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "lane_relation", "input_type": "radio", "mutable": true, "values": ["in_lane", "near_lane", "out_of_lane"], "default_value": "near_lane"},
+      {"name": "distance_band", "input_type": "radio", "mutable": true, "values": ["lt10m", "10to25m", "gt25m"], "default_value": "10to25m"},
+      {"name": "motion_state", "input_type": "select", "mutable": true, "values": ["along", "cut_in", "crossing", "static"], "default_value": "along"},
+      {"name": "risk_status", "input_type": "select", "mutable": true, "values": ["normal", "threatening", "colliding", "post_crash"], "default_value": "normal"},
+      {"name": "ignore", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "prelabel_modified", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"}
+    ]
+  },
+  {
+    "name": "Bicycle",
+    "color": "#FFFF00",
+    "type": "rectangle",
+    "attributes": [
+      {"name": "occlusion_level", "input_type": "select", "mutable": true, "values": ["0-25%", "25-50%", "50-80%", ">80%"], "default_value": "0-25%"},
+      {"name": "truncated", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "lane_relation", "input_type": "radio", "mutable": true, "values": ["in_lane", "near_lane", "out_of_lane"], "default_value": "near_lane"},
+      {"name": "distance_band", "input_type": "radio", "mutable": true, "values": ["lt10m", "10to25m", "gt25m"], "default_value": "gt25m"},
+      {"name": "motion_state", "input_type": "select", "mutable": true, "values": ["along", "crossing", "static", "cut_in"], "default_value": "along"},
+      {"name": "risk_status", "input_type": "select", "mutable": true, "values": ["normal", "threatening", "colliding", "post_crash"], "default_value": "normal"},
+      {"name": "ignore", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "prelabel_modified", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"}
+    ]
+  },
+  {
+    "name": "Car",
+    "color": "#0000FF",
+    "type": "rectangle",
+    "attributes": [
+      {"name": "occlusion_level", "input_type": "select", "mutable": true, "values": ["0-25%", "25-50%", "50-80%", ">80%"], "default_value": "0-25%"},
+      {"name": "truncated", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "lane_relation", "input_type": "radio", "mutable": true, "values": ["in_lane", "near_lane", "out_of_lane"], "default_value": "in_lane"},
+      {"name": "distance_band", "input_type": "radio", "mutable": true, "values": ["lt10m", "10to25m", "gt25m"], "default_value": "10to25m"},
+      {"name": "motion_state", "input_type": "select", "mutable": true, "values": ["along", "static", "crossing", "cut_in"], "default_value": "along"},
+      {"name": "risk_status", "input_type": "select", "mutable": true, "values": ["normal", "threatening", "colliding", "post_crash"], "default_value": "normal"},
+      {"name": "ignore", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "prelabel_modified", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"}
+    ]
+  },
+  {
+    "name": "Bus_Truck",
+    "color": "#800080",
+    "type": "rectangle",
+    "attributes": [
+      {"name": "occlusion_level", "input_type": "select", "mutable": true, "values": ["0-25%", "25-50%", "50-80%", ">80%"], "default_value": "0-25%"},
+      {"name": "truncated", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "lane_relation", "input_type": "radio", "mutable": true, "values": ["in_lane", "near_lane", "out_of_lane"], "default_value": "in_lane"},
+      {"name": "distance_band", "input_type": "radio", "mutable": true, "values": ["lt10m", "10to25m", "gt25m"], "default_value": "gt25m"},
+      {"name": "motion_state", "input_type": "select", "mutable": true, "values": ["along", "static", "cut_in", "crossing"], "default_value": "along"},
+      {"name": "risk_status", "input_type": "select", "mutable": true, "values": ["normal", "threatening", "colliding", "post_crash"], "default_value": "normal"},
+      {"name": "ignore", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "prelabel_modified", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"}
+    ]
+  },
+  {
+    "name": "UNKNOWN_OBJECT",
+    "color": "#808080",
+    "type": "rectangle",
+    "attributes": [
+      {"name": "occlusion_level", "input_type": "select", "mutable": true, "values": ["0-25%", "25-50%", "50-80%", ">80%"], "default_value": "0-25%"},
+      {"name": "truncated", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "lane_relation", "input_type": "radio", "mutable": true, "values": ["in_lane", "near_lane", "out_of_lane"], "default_value": "in_lane"},
+      {"name": "distance_band", "input_type": "radio", "mutable": true, "values": ["lt10m", "10to25m", "gt25m"], "default_value": "lt10m"},
+      {"name": "motion_state", "input_type": "select", "mutable": true, "values": ["static", "crossing", "along", "cut_in"], "default_value": "static"},
+      {"name": "risk_status", "input_type": "select", "mutable": true, "values": ["normal", "threatening", "colliding", "post_crash"], "default_value": "normal"},
+      {"name": "ignore", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"},
+      {"name": "prelabel_modified", "input_type": "checkbox", "mutable": true, "values": ["false"], "default_value": "false"}
+    ]
+  }
+]
 ```
+
+#### 3. Bảng Ánh Xạ Mô Hình AI Pre-label (Nuclio Serverless Function Mapping)
+Khi tích hợp mô hình phát hiện candidate boxes (YOLOv10 / Grounding DINO) chạy dưới dạng Nuclio serverless function, hàm runtime tự động thực hiện ánh xạ từ nhãn COCO 80 lớp sang 6 lớp VinFast:
+
+```python
+# nuclio_function.py (Trích đoạn code ánh xạ nhãn tự động):
+COCO_TO_VINFAST_SPEC = {
+    0: "Pedestrian",      # COCO 'person' -> VinFast 'Pedestrian'
+    1: "Bicycle",         # COCO 'bicycle' -> VinFast 'Bicycle' (kèm rider)
+    2: "Car",             # COCO 'car' -> VinFast 'Car'
+    3: "Motorcycle",      # COCO 'motorcycle' -> VinFast 'Motorcycle' (kèm rider)
+    5: "Bus_Truck",       # COCO 'bus' -> VinFast 'Bus_Truck'
+    7: "Bus_Truck",       # COCO 'truck' -> VinFast 'Bus_Truck'
+}
+# Lưu ý: Class UNKNOWN_OBJECT (đá tảng, lốp vỡ, trâu bò) CẤM tự động sinh bằng AI
+# để tránh False Positives hàng loạt; bắt buộc do annotator xác thực thủ công.
+```
+
+#### 4. Bản Đồ Phím Tắt Công Thái Học (Ergonomics Hotkey Map) Cho Chuyên Viên Tổ C
+Tối ưu hóa thao tác chuột và bàn phím giúp annotator thao tác đạt tốc độ $\ge 120\text{ box/giờ}$ mà không bị mỏi cơ:
+
+| Thao tác (Action) | Phím tắt (Hotkey) | Hành vi Vận hành trong CVAT |
+| :--- | :---: | :--- |
+| **Chọn nhanh Lớp Nhãn** | Phím số `1` đến `6` | `1`: Pedestrian, `2`: Motorcycle, `3`: Bicycle, `4`: Car, `5`: Bus_Truck, `6`: UNKNOWN_OBJECT |
+| **Vẽ Track Bbox Mới** | `Shift + N` | Tự động tạo Bbox ở chế độ Track Mode (không dùng Shape Mode) |
+| **Chốt / Bật Keyframe** | `K` | Tạo Keyframe trên timeline để ghi nhận sự thay đổi tọa độ hoặc thuộc tính |
+| **Bật / Tắt cờ `ignore`** | `I` | Đánh dấu vùng mù/quang học bão hòa hoặc Bbox $< 12\text{px}$ (Zero-loss) |
+| **Lật cờ `risk_status`** | `Shift + R` | Chuyển nhanh trạng thái timeline: `normal` $\to$ `threatening` $\to$ `colliding` |
+| **Tua Timeline Khung Hình** | `F` / `D` (1 frame)<br>`V` / `C` (10 frames) | Duyệt tiến/lùi dọc theo timeline hành trình xe để quan sát vector động học |
 
 ---
 
