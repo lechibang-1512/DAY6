@@ -164,11 +164,9 @@ Quyết định **kích hoạt phanh khẩn cấp (AEB) / cảnh báo (FCW) / kh
 <div class="grid-2">
 <div>
 
-### NGUỒN THỰC CHIẾN: NEXAR COLLISION PREDICTION
-* **Kaggle / Hugging Face:** `nexar-collision-prediction` (Sạch ToS).
-* **2.844 video dashcam MP4** ($1280 \times 720$ @ 30 FPS):
-  * **Train (1.500 video, ~40s):** 750 positive (400 va chạm, 350 suýt va chạm) + 750 negative (lái bình thường).
-  * **Test (1.344 video, ~10s):** Cắt ở mốc dẫn truyền `time_to_accident`: 0.5s, 1.0s, 1.5s.
+### ĐA NGUỒN THỰC CHIẾN: NEXAR + DADA-2000
+* **Nexar (Kaggle/HuggingFace):** 2.844 video dashcam MP4 (720p @ 30fps). **CHỈ dùng cho va chạm Car/Truck** (vì Nexar loại bỏ VRU!).
+* **DADA-2000 / DoTA (2.000+ video):** Bổ sung các ca va chạm và suýt đâm **Người đi bộ & Xe máy (VRU Crash)**.
 * **In-house Dashcam VN:** 4 người × 2h = 8h video ngõ nhỏ VN.
 
 <div class="card-blue">
@@ -205,19 +203,19 @@ Quyết định **kích hoạt phanh khẩn cấp (AEB) / cảnh báo (FCW) / kh
 
 ### PIPELINE 6 BƯỚC (DÒNG CHẢY DỮ LIỆU THÔ → NHÃN)
 ```text
-Video Thô (Nexar/In-house, 30fps)
+Video Thô (Nexar/DADA/In-house, 30fps)
   ├─1. Tách Keyframe 2 fps ───────────► Giảm 15x, nhúng trip_id vào file
   ├─2. Khử Trùng lặp (pHash) ─────────► Lọc khung đèn đỏ, copy ra output
   ├─3. ẨN DANH 2 LỚP (Face + Plate) ──► CỔNG CHẶN PHÁP LÝ (Nghị định 13)
-  ├─4. AI Pre-label (YOLOv10) ────────► Sinh proposal khi conf > 0.6
-  ├─5. Gán nhãn CVAT ─────────────────► Người sửa Bbox + Gán nhãn động học
+  ├─4. AI Pre-label (Nuclio Serverless)► YOLOv10 sinh candidate boxes (conf>0.6)
+  ├─5. CVAT Multi-Frame Track Mode ───► Nội suy TransT/SAM2 + Lật cờ risk_status
   └─6. Xuất Manifest Parquet & COCO ──► Đẩy vào DataLoader ML Pipeline
 ```
 
 <div class="card-blue">
-<strong>ẨN DANH 2 LỚP (BẢO VỆ PHÁP LÝ):</strong>
-1. <strong>Mặt người:</strong> Chạy <code>deface</code> (CenterFace), nới biên 10% rồi Gaussian Blur.<br/>
-2. <strong>Biển số xe:</strong> Chạy mô hình <code>yolov8n-plate</code> chuyên dụng làm mờ biển số. Che mặt không mất dáng người; không che PII thì không được phép gán ngoài!
+<strong>ẨN DANH 2 LỚP & CVAT TRACK MODE:</strong>
+• <strong>Ẩn danh:</strong> <code>deface</code> (Mặt) + <code>yolov8n-plate</code> (Biển số).<br/>
+• <strong>CVAT Track Mode:</strong> Keyframe t=0 và t=30, CVAT tự nội suy 29 frame giữa. Lật cờ timeline: <code>risk_status: normal → threatening → colliding</code>.
 </div>
 
 </div>
@@ -232,10 +230,11 @@ Video Thô (Nexar/In-house, 30fps)
 - Tọa độ Bbox: obj_id, class_name, x_min, y_min, w, h
 - Che khuất: occlusion_level (0-25, 25-50, 50-80, >80), truncated
 
-# 3 TRƯỜNG ĐỘNG HỌC QUYẾT ĐỊNH PHANH AEB:
+# THUỘC TÍNH ĐỘNG HỌC & RỦI RO PHỤC VỤ PHANH AEB:
 - lane_relation: [in_lane, near_lane, out_of_lane]
 - distance_band: [lt10m, 10to25m, gt25m]
 - motion_state: [static, along, crossing, cut_in]
+- risk_status: [normal, threatening, colliding, post_crash]
 
 # KIỂM SOÁT ZERO-LOSS & AUDIT PROVENANCE:
 - ignore: bool           # Bbox < 12px, lóa photon (Zero-loss)
@@ -248,61 +247,36 @@ Video Thô (Nexar/In-house, 30fps)
 
 ---
 
-# 3. TỔ B & TỔ D: LỆNH THỰC THI & CHỐNG RÒ RỈ `trip_id` [TA Q4]
-## Mã Code Thực tế Có Kiểm soát Tài nguyên & Chứng minh Zero-Leakage Bằng Assert
+# 3. TỔ B & TỔ D: THIẾT KẾ XỬ LÝ DỮ LIỆU & CHỐNG RÒ RỈ [TA Q4]
+## Đặc tả Thuật toán Tiền xử lý, Khử khuẩn PII 2 Lớp & Phân tách Độc lập Group Key
 
 <div class="grid-2">
 <div>
 
-### 1. Tách Keyframe 2fps & Ẩn danh PII (Bash)
-```bash
-# Tạo thư mục, nhúng trip_id vào tên file chống mất Group Key
-mkdir -p frames/ && ffmpeg -i trip_0042.mp4 -vf fps=2 -q:v 2 \
-       frames/trip_0042_%06d.jpg
-
-# Ẩn danh mặt (deface) & Biển số xe (YOLOv8-plate)
-deface frames/ --thresh 0.2 --replacewith blur
-python run_plate_blur.py --input frames/
-```
-
-### 2. Khử trùng pHash Chống Rò rỉ FD (Python)
-```python
-import imagehash, glob, os, shutil
-from PIL import Image
-seen = []
-for p in sorted(glob.glob("frames/trip_0042_*.jpg")):
-    with Image.open(p) as img:  # Context manager chống leak FD
-        h = imagehash.phash(img)
-    if all(h - s > 8 for s in seen[-30:]):  # Hamming > 8 mới giữ
-        seen.append(h)
-        shutil.copy(p, os.path.join("filtered/", os.path.basename(p)))
-```
+### 1. KIẾN TRÚC TIỀN XỬ LÝ & KHỬ PII HAI LỚP
+* **Trích xuất Keyframe (2 fps):** Chu kỳ lấy mẫu $\Delta t = 500\text{ms}$ giảm tải $15\times$ khối lượng lưu trữ. Định danh `trip_id` được nhúng trực tiếp vào cấu trúc tên tệp và metadata để bảo toàn Group Key.
+* **Cổng khử PII Khuôn mặt:** Áp dụng mạng CenterFace, mở rộng biên cục bộ $10\%$ và làm mờ Gauss ($\sigma=15$).
+* **Cổng khử PII Biển số xe:** Tích hợp bộ dò biển số chuyên dụng (Plate Detector), khử khuẩn toàn bộ phương tiện giao thông.
+* **Lọc Trùng lặp Nhận thức pHash (Perceptual Hash):**
+  * Mã hóa chuỗi băm 64-bit qua biến đổi Cosine rời rạc (DCT).
+  * Bộ đệm trượt 30 khung hình gần nhất: Loại bỏ khung hình nếu khoảng cách Hamming $d_H \le 8$ (dừng đèn đỏ, kẹt xe tĩnh).
 
 </div>
 <div>
 
-### 3. [TA Q4] CHỐNG RÒ RỈ TRIP_ID (GroupShuffleSplit)
-```python
-from sklearn.model_selection import GroupShuffleSplit
-# Chia Test 15% theo trip_id
-gss = GroupShuffleSplit(n_splits=1, test_size=0.15, random_state=42)
-tr_val_idx, te_idx = next(gss.split(df, groups=df.trip_id))
-# Chia tiếp Train (70%) và Val (15%)
-gss_v = GroupShuffleSplit(n_splits=1, test_size=0.1765, random_state=42)
-tr_idx, val_idx = next(gss_v.split(df.iloc[tr_val_idx], 
-                                  groups=df.iloc[tr_val_idx].trip_id))
+### 2. [TA Q4] CƠ CHẾ CHỐNG RÒ RỈ DỮ LIỆU THỜI GIAN
+* **Khóa Chết Group Key `trip_id`:** Mọi khung hình của cùng một chuyến đi bắt buộc phải nằm trọn vẹn trong duy nhất 1 tập con.
+* **Phân bổ Tỷ lệ:** Huấn luyện ($70\%$), Kiểm định ($15\%$), Đánh giá ($15\%$).
+* **Ràng buộc Tập hợp Bất biến (Zero-Leakage Invariant):**
+  $$\text{Trips}_{\text{Train}} \cap \text{Trips}_{\text{Val}} = \emptyset, \quad \text{Trips}_{\text{Train}} \cap \text{Trips}_{\text{Test}} = \emptyset, \quad \text{Trips}_{\text{Val}} \cap \text{Trips}_{\text{Test}} = \emptyset$$
+* **Kiểm toán Cận trùng lặp xuyên tập:** Quét pHash giữa Train và Test, cam kết **0 cặp khung hình** có khoảng cách Hamming $d_H \le 8$.
+* **Thực nghiệm Ablation Proof:** Điểm mAP chia ngẫu nhiên đạt $94.2\%$ (học thuộc lòng bối cảnh), chia theo `trip_id` đạt $81.5\%$. Chênh lệch $12.7\%$ chứng minh lượng thông tin rò rỉ đã bị triệt tiêu hoàn toàn.
 
-# ASSERTION KIỂM TOÁN TỰ ĐỘNG TRÊN CI/CD
-tr_trips = set(df.iloc[tr_idx].trip_id)
-te_trips = set(df.iloc[te_idx].trip_id)
-assert tr_trips.isdisjoint(te_trips), "FATAL: Rò rỉ Trip ID!"
-```
+</div>
+</div>
 
 <div class="card-red">
-<strong>VÌ SAO KHÔNG CHIA RANDOM?</strong> Ở 30fps, 2 khung kề nhau cách 33ms chung bối cảnh. Chia random đưa đáp án vào đề thi: mAP 94.2% ảo nhưng test thật chỉ 81.5% (Ablation lệch 12.7%).
-</div>
-
-</div>
+<strong>TỬ HUYỆT RÒ RỈ DỮ LIỆU:</strong> Ở 30fps, 2 khung hình kề nhau cách nhau 33ms chứa chung bối cảnh tĩnh. Chia ngẫu nhiên đưa đáp án vào đề thi: mAP đạt 94.2% ảo nhưng test thực tế chỉ 81.5% (Ablation lệch 12.7%).
 </div>
 
 ---

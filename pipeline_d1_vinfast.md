@@ -51,14 +51,19 @@
 
 ## 2. TỔ A: NGUỒN DỮ LIỆU THỰC TẾ, QUARANTINE VÀ ÉP QUOTA TẬP TEST
 
-### 2.1 Khai thác Bộ Dữ liệu Nexar Collision Prediction (Nguồn thực chiến chính)
-*   **Vị trí kho dữ liệu:**
+### 2.1 Khai thác Bộ Dữ liệu Nexar Collision Prediction & DADA-2000
+*   **Vị trí kho dữ liệu Nexar:**
     *   Kaggle: `nexar-collision-prediction`
-    *   Hugging Face Mirror (Toàn quyền truy cập): `nexar-ai/nexar_collision_prediction`
-*   **Quy mô bộ dữ liệu:** 2.844 video dashcam MP4 định dạng chuẩn $1280 \times 720$ @ 30 FPS.
-    *   **Tập Train (1.500 video full, ~40s/video):** Gồm 750 video positive (400 vụ đâm thật, 350 vụ suýt đâm near-miss) và 750 video negative (lái xe bình thường).
-    *   **Tập Test (1.344 video, ~10s/video):** Được cắt ngắn ở các mốc thời gian dẫn truyền va chạm (`time_to_accident`): 0.5s, 1.0s, và 1.5s.
-*   **Metadata thực tế của Nexar:** Cung cấp nhãn `time_of_event`, `time_of_alert`, `light_conditions`, `weather`, `scene`, `time_to_accident`.
+    *   Hugging Face Mirror: `nexar-ai/nexar_collision_prediction`
+*   **Quy mô bộ dữ liệu Nexar:** 2.844 video dashcam MP4 ($1280 \times 720$ @ 30 FPS).
+    *   **Tập Train (1.500 video, ~40s/video):** 750 video positive (400 va chạm thật, 350 suýt va chạm near-miss) và 750 video negative (lái bình thường).
+    *   **Tập Test (1.344 video, ~10s/video):** Cắt ngắn ở các mốc `time_to_accident`: 0.5s, 1.0s, và 1.5s.
+*   **TỬ HUYỆT CỦA NEXAR & GIẢI PHÁP ĐA NGUỒN (MULTI-SOURCE TOPOLOGY):**
+    *   *Giới hạn thiết kế của Nexar (arXiv:2503.03848):* Nexar **chỉ tập trung vào va chạm ô tô/xe tải** ("Front-Facing Vehicle Collisions Only: Must involve cars or trucks. **Pedestrians, bicycles, motorcycles were excluded**").
+    *   *Chiến lược phối hợp:* Do Cost Matrix của VinFast phạt sót VRU cực nặng (Người đi bộ 1000, Xe máy 800), nhóm bắt buộc kết hợp:
+        1.  **Nexar (2.844 video):** Nguồn va chạm dương tính cho phương tiện lớn (Car / Bus / Truck).
+        2.  **DADA-2000 / DoTA (2.000+ video):** Nguồn va chạm dương tính chuyên biệt cho **Người đi bộ băng đường & Xe máy tạt đầu (VRU Near-miss & Collision)**.
+        3.  **In-house Dashcam VN (8h):** Dữ liệu ngõ nhỏ, mật độ xe máy kẹp 3 hỗn loạn tại Việt Nam.
 
 ### 2.2 Đánh giá Giấy phép & Sổ nguồn (Data Ledger)
 *   Tải video YouTube hàng loạt là vi phạm ToS. Hệ thống xe thương mại VinFast phân định rõ 2 mục đích sử dụng:
@@ -98,107 +103,57 @@ Thu thập dữ liệu kèm Provenance. Các tệp lỗi (video hỏng codec, m�
 
 ## 3. TỔ B: DATA PIPELINE 6 BƯỚC, SCHEMA PARQUET & MÃ LỆNH THỰC THI
 
-### 3.1 Pipeline Xử lý 6 Bước (Raw $\to$ Release Manifest)
+### 3.1 Pipeline Xử lý 6 Bước & Quy trình CVAT Multi-Frame Tracking
+*Nexar không gán bounding box (chỉ có nhãn thời gian video 1 điểm). Đơn vị dữ liệu của VinFast là "một vật thể trong một khung hình". Do đó, quy trình bắt buộc chuyển đổi từ Video-level sang Object-level trong CVAT:*
+
 ```text
-Video Thô (Nexar/In-house, 30fps)
+Video Thô (Nexar/DADA/In-house, 30fps)
   ├─1. Tách Keyframe 2 fps ───────────► Giảm 15x, nhúng trip_id vào filename
-  ├─2. Khử Trùng lặp (pHash) ─────────► Lọc khung dừng đèn đỏ, lưu keep_frames
+  ├─2. Khử Trùng lặp (pHash) ─────────► Lọc khung đèn đỏ, copy ra output
   ├─3. ẨN DANH 2 LỚP (Face + Plate) ──► CỔNG CHẶN PHÁP LÝ (Nghị định 13)
-  ├─4. AI Pre-label (YOLOv10) ────────► Sinh proposal (Chỉ chạy khi conf > 0.6)
-  ├─5. Gán nhãn CVAT ─────────────────► Người sửa Bbox + Gán nhãn động học
-  └─6. Xuất Manifest Parquet & COCO ──► Sẵn sàng đưa vào DataLoader
+  ├─4. AI Pre-label (Nuclio Serverless)► YOLOv10/Grounding DINO sinh candidate boxes
+  ├─5. CVAT Multi-Frame Track Mode ───► Nội suy tuyến tính + Lật cờ risk_status
+  └─6. Xuất Manifest Parquet & COCO ──► Đẩy vào DataLoader ML Pipeline
 ```
 
-### 3.2 Lệnh Thực thi Cụ thể (Runnable Shell & Python Scripts)
+*   **Quy trình Gán nhãn Video trong CVAT (Track Mode thay vì Shape Mode):**
+    1.  *Nuclio Serverless Auto-Annotation:* Triển khai YOLOv10 trên Nuclio runtime trong CVAT để sinh Bbox ban đầu cho xe cộ, người đi bộ khi confidence $> 0.6$.
+    2.  *Keyframing & Linear Interpolation (TransT/SAM2):* Annotator chỉ cần căn chỉnh Bbox ở frame $t=0$ và frame $t=30$. CVAT tự động nội suy tọa độ Bbox cho 29 frame ở giữa, giảm 90% công sức vẽ tay.
+    3.  *Lật cờ Thuộc tính Động học (Timeline State Flipping):* Trên thanh timeline của Track ID vật thể, annotator căn cứ vào tín hiệu visual/Nexar alert để lật cờ:
+        `risk_status: normal` $\implies$ `threatening (onset va chạm)` $\implies$ `colliding (thời điểm đâm)`.
 
-#### Lệnh 1: Tách Keyframe 2 fps & Nhúng cứng `trip_id` (Bash)
-```bash
-# Tạo thư mục đích để tránh crash
-mkdir -p frames/
-# Tách khung 2fps, giữ chất lượng ảnh cao (q:v 2), nhúng trip_id vào tên file
-ffmpeg -i raw_videos/trip_0042.mp4 -vf fps=2 -q:v 2 frames/trip_0042_%06d.jpg
-```
+### 3.2 Đặc tả Thiết kế Kỹ thuật & Hợp đồng Dữ liệu (Pipeline Architecture & Data Contracts)
 
-#### Lệnh 2: Khử Trùng lặp bằng pHash Có Kiểm soát Tài nguyên (Python)
-```python
-import imagehash, glob, os, shutil
-from PIL import Image
+#### Giai đoạn 1: Trích xuất Khung hình & Bảo tồn Khóa Nhóm (Keyframe Extraction & Group Key Invariant)
+*   **Mục tiêu Thiết kế:** Hạ mẫu thời gian để tối ưu hóa $15\times$ chi phí truyền dẫn và lưu trữ, đồng thời bảo toàn định danh chuyến đi.
+*   **Hợp đồng Đầu vào (Input Contract):** Các luồng video thô `.mp4` từ Nexar, DADA-2000 và In-house Dashcam VN ($1280 \times 720$ @ 30 FPS, H.264/H.265).
+*   **Quy tắc Xử lý:**
+    *   Tần số lấy mẫu: Cố định $2\text{ fps}$ ($\Delta t = 500\text{ms}$).
+    *   Quy chuẩn Định danh: Cấu trúc tên tệp bắt buộc nhúng Group Key: `{trip_id}_{frame_index:06d}.jpg`.
+*   **Hợp đồng Đầu ra (Output Contract):** Kho khung hình JPEG chất lượng cao ($q \ge 95$), mỗi tệp liên kết bất biến với `trip_id`.
 
-output_dir = "filtered_frames"
-os.makedirs(output_dir, exist_ok=True)
+#### Giai đoạn 2: Khử Trùng lặp Nhận thức (Perceptual Hash Deduplication)
+*   **Mục tiêu Thiết kế:** Loại bỏ các khung hình tĩnh do xe dừng đèn đỏ hoặc tắc đường kéo dài (tránh overfit bối cảnh nền và lãng phí 80% ngân sách gán nhãn).
+*   **Thuật toán & Tham số Vận hành:**
+    *   Biến đổi ảnh xám $32 \times 32 \to$ Biến đổi Cosine rời rạc (DCT) $8 \times 8 \to$ Tạo chuỗi băm 64-bit (pHash).
+    *   Bộ đệm trượt cục bộ: Duy trì danh sách băm của 30 khung hình gần nhất trong cùng một `trip_id` (chống rò rỉ biên giữa các chuyến đi).
+    *   Ngưỡng loại bỏ: Khoảng cách Hamming $d_H(h_t, h_{t-k}) \le 8$ với mọi $k \in [1, 30] \implies$ DROP khung hình.
+*   **Hợp đồng Đầu ra:** Thư mục `filtered_frames/` chứa tập khung hình động lực học hữu ích.
 
-# Sắp xếp và xử lý theo từng trip để tránh rò rỉ biên liên chuyến
-trips = set(os.path.basename(p).split('_')[0] + '_' + os.path.basename(p).split('_')[1] 
-            for p in glob.glob("frames/*.jpg"))
+#### Giai đoạn 3: Cổng Chặn Ẩn danh PII Hai Lớp (Two-Tier Privacy Protection Gate)
+*   **Mục tiêu Thiết kế:** Tuân thủ tuyệt đối Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân; cấm chuyển dữ liệu ra bên ngoài khi chưa khử khuẩn PII.
+*   **Cấu trúc 2 Lớp Độc lập:**
+    *   *Lớp 1 (Khuôn mặt):* Mô hình trinh sát khuôn mặt (CenterFace), mở rộng biên bounding box thêm $10\%$ theo mọi hướng để chống hụt mép, áp dụng bộ lọc mờ Gauss ($\sigma=15$, kernel $51 \times 51$).
+    *   *Lớp 2 (Biển số xe):* Bộ phát hiện biển số chuyên dụng (Plate Detector), cô lập vùng ký tự và làm mờ vĩnh viễn không thể đảo ngược.
+*   **Tiêu chuẩn Nghiệm thu Cổng:** Tỷ lệ sót PII trên mẫu audit độc lập $\le 0.001\%$. Tuyệt đối bảo tồn hình khối cơ thể, quần áo và đèn tín hiệu xe.
 
-for trip in sorted(trips):
-    trip_frames = sorted(glob.glob(f"frames/{trip}_*.jpg"))
-    seen_hashes = []
-    for p in trip_frames:
-        # Sử dụng context manager 'with' để đóng file handle, chống lỗi Too many open files
-        with Image.open(p) as img:
-            h = imagehash.phash(img)
-        # Giữ frame nếu khác biệt Hamming > 8 so với 30 frame gần nhất
-        if all(h - s > 8 for s in seen_hashes[-30:]):
-            seen_hashes.append(h)
-            shutil.copy(p, os.path.join(output_dir, os.path.basename(p)))
-```
-
-#### Lệnh 3: Ẩn danh PII Hai Lớp (Khuôn mặt + Biển số xe) (Bash/Python)
-```bash
-# 1. Che khuôn mặt bằng deface (dùng CenterFace, mở rộng biên 10%)
-deface filtered_frames/ --thresh 0.2 --replacewith blur --boxes
-
-# 2. BẮT BUỘC: Che biển số xe bằng detector chuyên dụng (YOLOv8-plate)
-python -c "
-from ultralytics import YOLO
-import cv2, glob
-
-model = YOLO('yolov8n-plate.pt')
-for p in glob.glob('filtered_frames/*.jpg'):
-    img = cv2.imread(p)
-    results = model(img, verbose=False)
-    for box in results[0].boxes.xyxy.cpu().numpy():
-        x1, y1, x2, y2 = map(int, box)
-        h, w = y2 - y1, x2 - x1
-        x1, y1 = max(0, x1 - int(0.1*w)), max(0, y1 - int(0.1*h))
-        x2, y2 = min(img.shape[1], x2 + int(0.1*w)), min(img.shape[0], y2 + int(0.1*h))
-        roi = img[y1:y2, x1:x2]
-        img[y1:y2, x1:x2] = cv2.GaussianBlur(roi, (51, 51), 15)
-    cv2.imwrite(p, img)
-"
-```
-
-#### Lệnh 4: Phân tách Chống Rò rỉ Train / Val / Test theo `trip_id` (Python)
-```python
-import pandas as pd
-from sklearn.model_selection import GroupShuffleSplit
-
-# Đọc manifest chứa toàn bộ annotation
-df = pd.read_parquet("manifest.parquet")
-
-# Bước 1: Tách tập Test (15% số chuyến)
-gss_test = GroupShuffleSplit(n_splits=1, test_size=0.15, random_state=42)
-train_val_idx, test_idx = next(gss_test.split(df, groups=df.trip_id))
-df_train_val = df.iloc[train_val_idx]
-df_test = df.iloc[test_idx]
-
-# Bước 2: Tách tập Train (70%) và Val (15%) từ phần còn lại
-gss_val = GroupShuffleSplit(n_splits=1, test_size=0.1765, random_state=42)  # 0.15 / 0.85 ≈ 0.1765
-train_idx, val_idx = next(gss_val.split(df_train_val, groups=df_train_val.trip_id))
-df_train = df_train_val.iloc[train_idx]
-df_val = df_train_val.iloc[val_idx]
-
-# BẰNG CHỨNG KIỂM TOÁN TỰ ĐỘNG TRÊN CI/CD
-train_trips = set(df_train.trip_id)
-val_trips = set(df_val.trip_id)
-test_trips = set(df_test.trip_id)
-
-assert train_trips.isdisjoint(val_trips), "FATAL: Rò rỉ giữa Train và Val!"
-assert train_trips.isdisjoint(test_trips), "FATAL: Rò rỉ giữa Train và Test!"
-assert val_trips.isdisjoint(test_trips), "FATAL: Rò rỉ giữa Val và Test!"
-print(f"Split sạch hoàn toàn 100%: Train={len(train_trips)} trips, Val={len(val_trips)} trips, Test={len(test_trips)} trips")
-```
+#### Giai đoạn 4: Phân tách Tập dữ liệu Độc lập (Stratified Group Split Architecture)
+*   **Mục tiêu Thiết kế:** Triệt tiêu hoàn toàn hiện tượng Rò rỉ Dữ liệu Thời gian (Temporal Leakage).
+*   **Nguyên lý Phân tách:** Áp dụng thuật toán chia theo cụm (Group-based Splitting). Khóa toàn bộ các khung hình của cùng một `trip_id` vào duy nhất 1 tập con.
+*   **Tỷ lệ Phân bổ:** Huấn luyện (Train $70\%$), Kiểm định (Validation $15\%$), Đánh giá (Test $15\%$).
+*   **Điều kiện Tiên quyết Bất biến (Set-Theoretic Invariants):**
+    $$\text{Trips}_{\text{Train}} \cap \text{Trips}_{\text{Val}} = \emptyset, \quad \text{Trips}_{\text{Train}} \cap \text{Trips}_{\text{Test}} = \emptyset, \quad \text{Trips}_{\text{Val}} \cap \text{Trips}_{\text{Test}} = \emptyset$$
+*   **Kiểm toán CI/CD Tự động:** Script xác thực tự động kiểm tra tính rời nhau (disjoint) của tập hợp ID và kiểm toán chéo pHash giữa Train và Test trước khi cấp phép lưu kho.
 
 ### 3.3 Schema Manifest Định dạng Parquet Đầy đủ (24 Trường)
 Lưu trữ dạng Flat Table trên Parquet để query trực tiếp bằng Pandas/Polars/DuckDB, hỗ trợ lọc slice với tốc độ hàng triệu dòng/giây:
@@ -225,10 +180,11 @@ Schema Manifest (manifest.parquet - 1 dòng = 1 vật thể trong 1 khung):
   - occlusion_level: string  # [0-25%, 25-50%, 50-80%, >80%]
   - truncated: bool          # Bị cắt ở mép ảnh (diện tích thấy >= 25%)
 
-  # 4. Ba trường Động học Sống còn phục vụ Phanh AEB:
+  # 4. Ba trường Động học & Trạng thái Rủi ro phục vụ Phanh AEB:
   - lane_relation: string    # [in_lane, near_lane, out_of_lane]
   - distance_band: string    # [lt10m, 10to25m, gt25m]
   - motion_state: string     # [static, along, crossing, cut_in]
+  - risk_status: string      # [normal, threatening, colliding, post_crash] (Timeline CVAT)
 
   # 5. Cờ Bỏ qua & Kiểm soát Pre-label:
   - ignore: bool             # Zero-loss flag (Bbox < 12px, lóa bão hòa)
