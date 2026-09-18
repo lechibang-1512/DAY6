@@ -9,46 +9,46 @@ color: #e0e6ed
 style: |
   section {
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-    padding: 22px 36px;
-    font-size: 12.5px;
+    padding: 20px 34px;
+    font-size: 12px;
     background-color: #0b132b;
     color: #e0e6ed;
   }
   h1 {
-    font-size: 20px;
+    font-size: 19px;
     color: #38bdf8;
     margin-top: 0px;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     border-bottom: 2px solid #1e3a8a;
-    padding-bottom: 3px;
+    padding-bottom: 2px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
   h2 {
-    font-size: 14px;
+    font-size: 13.5px;
     color: #60a5fa;
     margin-top: 1px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
   h3 {
-    font-size: 12.5px;
+    font-size: 12px;
     color: #93c5fd;
     margin-bottom: 2px;
-    margin-top: 2px;
+    margin-top: 1px;
   }
   p, li {
-    font-size: 12px;
-    line-height: 1.28;
+    font-size: 11.8px;
+    line-height: 1.26;
     margin-top: 1px;
-    margin-bottom: 2px;
+    margin-bottom: 1.5px;
   }
   strong { color: #f8fafc; }
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 10.5px;
-    margin-top: 3px;
-    margin-bottom: 4px;
+    font-size: 10px;
+    margin-top: 2px;
+    margin-bottom: 3px;
     background: #1e293b;
     border-radius: 4px;
     overflow: hidden;
@@ -56,34 +56,34 @@ style: |
   th {
     background-color: #1e3a8a;
     color: #ffffff;
-    padding: 3px 6px;
+    padding: 2.5px 5px;
     text-align: left;
     font-weight: 600;
     border: 1px solid #334155;
   }
   td {
-    padding: 2.5px 6px;
+    padding: 2px 5px;
     border: 1px solid #334155;
     color: #cbd5e1;
   }
   tr:nth-child(even) { background-color: #0f172a; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
   .card-blue {
-    background: #0f172a; border-left: 4px solid #38bdf8; padding: 4px 7px; margin: 2px 0; font-size: 11.5px;
+    background: #0f172a; border-left: 4px solid #38bdf8; padding: 3.5px 6px; margin: 1.5px 0; font-size: 11px;
   }
   .card-red {
-    background: #1a0f1a; border-left: 4px solid #f43f5e; padding: 4px 7px; margin: 2px 0; font-size: 11.5px;
+    background: #1a0f1a; border-left: 4px solid #f43f5e; padding: 3.5px 6px; margin: 1.5px 0; font-size: 11px;
   }
   .card-green {
-    background: #062419; border-left: 4px solid #10b981; padding: 4px 7px; margin: 2px 0; font-size: 11.5px;
+    background: #062419; border-left: 4px solid #10b981; padding: 3.5px 6px; margin: 1.5px 0; font-size: 11px;
   }
   code {
     font-family: 'JetBrains Mono', monospace; background: #0f172a; color: #38bdf8;
-    padding: 1px 3px; border-radius: 3px; font-size: 10.5px;
+    padding: 1px 3px; border-radius: 3px; font-size: 10px;
   }
   pre {
     background: #0f172a; border: 1px solid #334155; border-radius: 4px;
-    padding: 4px 6px; font-size: 9.8px; line-height: 1.18; margin: 2px 0;
+    padding: 3px 5px; font-size: 9.2px; line-height: 1.15; margin: 1.5px 0;
   }
 ---
 
@@ -92,6 +92,13 @@ style: |
 ### DATA PIPELINE CHỐNG RÒ RỈ & BẢO ĐẢM TÍNH MẠNG TRONG 200MS
 **Nhóm 8 · Lớp 2B-D304** | Khung thời gian: **8 Phút 30 Giây Chuẩn mực** | 100% Data Architecture
 
+<div class="card-blue">
+<strong>CHUẨN BỊ BATTLE THEO RUBRIC 100 ĐIỂM (AICB-P2T4 · CANONICAL DATA LIFECYCLE):</strong><br/>
+• <strong>8 Thành viên chia 4 Tổ (A, B, C, D)</strong> — Phân định cứng trách nhiệm bàn giao phút 40, không ai ngồi không.<br/>
+• <strong>Nguồn thực chiến:</strong> Khai thác <strong>Nexar Collision Prediction</strong> (2.844 video dashcam) + <strong>DADA-2000</strong> (VRU crash) + 8h In-house VN.<br/>
+• <strong>Quyết định Lõi & Asymmetric Cost:</strong> Sót người đi bộ ($Cost=1000$) đắt gấp 6.67 lần phanh oan ($Cost=150$) và gấp 200 lần sót ngoài làn.<br/>
+• <strong>Trực diện 6 câu hỏi TA:</strong> Bảo vệ bằng số liệu vật lý quang học, code assert Zero-Leakage và kiến trúc 3 tầng khóa rủi ro con người (SPOF).
+</div>
 
 ---
 
@@ -105,7 +112,7 @@ style: |
 | **B (XỬ LÝ)** | **Thành viên 3** | Cổng chặn PII 2 lớp & Quarantine Bucket. | **[TA Q6 - Đồng phụ trách]** Failsafe CI/CD & Pipeline. |
 | | **Thành viên 4** | Khử trùng pHash & Schema Parquet 24 trường. | **[TA Q4 - Lead]** Kỹ thuật lọc trùng lặp & Schema data. |
 | **C (NHÃN)** | **Thành viên 5** | Guideline quy tắc Truncation, Amodal & Ignore. | **[TA Q3 - Lead]** Xử lý ca khó, che khuất ≥ 80%. |
-| | **Thành viên 6** | Bộ 10 ca biên Edge Cases & Nhãn động học. | Hỗ trợ TA Q3 & Giải trình Decision Log. |
+| | **Thành viên 6** | Bộ 10 ca biên Edge Cases, CVAT spec & Động học. | Hỗ trợ TA Q3 & Giải trình Decision Log. |
 | **D (ĐO LƯỜNG)**| **Thành viên 7 (Lead)**| Chiến lược GroupSplit chống rò rỉ, Ngưỡng QC. | **[TA Q2 - Lead]** Ma trận tổn thất & Asymmetric Loss. |
 | | **Thành viên 8** | Metric đo đạc (Miss Rate @ 0.1FP), Risk Audit. | **[TA Q5 - Lead] & [TA Q6 - Lead]** Đo lường & SPOF. |
 
@@ -388,46 +395,111 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 </div>
 </div>
 
+--- 
+
+### 2. IGNORE REGION & GIAO THỨC HOÃN PHÁN QUYẾT (ABSTAIN)
+* **Bản chất Kỹ thuật Ignore Region:** Triệt tiêu gradient đạo hàm ngược ($Loss = 0$), loại khỏi mẫu số Precision/Recall, tránh trừng phạt mô hình do giới hạn vật lý của cảm biến quang học.
+* **5 Điều kiện Kích hoạt Cứng:**
+  1. Chiều cao Bbox $h < 12\text{px}$ (vật thể $> 80\text{m}$, không đủ photon phân giải).
+  2. Lóa bão hòa cảm biến: $> 80\%$ diện tích pixel chạm mức trắng tuyệt đối ($Pixel=255$).
+  3. Che khuất $> 80\%$ mà không có chuỗi track mượt từ khung hình trước.
+  4. Vết nhòe quang học do giọt nước mưa lớn bám kính lái che phủ $> 50\%$ vật thể.
+  5. Đám đông dính khối hỗn tạp không thể bóc tách từng cá thể.
+* **Giao thức Abstain (Quyền không đoán mò):** Gặp sương mù dày/mù quang học, Annotator bấm Abstain gắn tag `can_xem_lai` đẩy sang hội đồng phân xử đa cảm biến **Radar 77GHz**.
+
+</div>
+</div>
+
+<div class="card-blue">
+<strong>NGUYÊN TẮC:</strong> Mô hình chỉ học những gì quang học giải quyết được. Ép mô hình học ở vùng photon bão hòa hoặc &lt; 12px chỉ sinh ra trọng số rác và làm mất ổn định hàm mất mát!
+</div>
+
 ---
 
-# 7. TỔ C: QUY TẮC AMODAL, IGNORE, 10 CA BIÊN & CVAT XML [TA Q3]
-## Thử Nghiệm Pilot Kép 30 Ảnh, Ma Trận Che Khuất, Quyền Abstain & Cấu Hình Máy Đọc Được
+# 8. TỔ C: KHÓA 10 CA BIÊN (EDGE CASES) GIAO THÔNG VIỆT NAM & DECISION LOG [TA Q3]
+## Bản Quy Chuẩn Xử Lý Ranh Giới Cơ Học, Động Học & Ghi Vết Nhật Ký Quyết Định Kỹ Thuật
 
 <div class="grid-2">
 <div>
 
-### PILOT GATE, AMODAL & QUYỀN ABSTAIN
-* **Pilot Gate (30 ảnh):** Bắt buộc mù đôi đạt **Cohen's Kappa $\kappa \ge 0.85$** và **$\text{mIoU} \ge 0.70$** mới mở gán nhãn đại trà.
-* **Ma trận Che khuất Amodal:**
-  * $0-25\%$: Vẽ Bbox sát viền nhìn thấy.
-  * $25-50\%$: Vẽ Amodal Bbox suy luận viền vật lý.
-  * $50-80\%$: **BẮT BUỘC vẽ Amodal Bbox**, loss tính 100% cho VRU.
-  * $>80\%$: Vẽ Amodal giữ Track ID, **bắt buộc cắm cờ `ignore = true`**.
-* **Quyền Abstain (Không đoán mò):** Gặp sương mù dày/mù quang học, Annotator bấm Abstain gắn tag `can_xem_lai`, đẩy sang hội đồng phân xử cảm biến **Radar 77GHz**.
+### NHÓM CA BIÊN CHE KHUẤT & ĐẶC THÙ VIỆT NAM
+1. **Người sau cột lộ 1 chân:** Gán Amodal Bbox trùm chiều cao người trưởng thành ($1.7\text{m}$), cờ `occlusion: 50-80%`, `class: Pedestrian`.
+2. **Xe máy sau ô tô thò gương:** Nếu thấy tay lái $\implies$ Gán Amodal Bbox xe máy. Nếu chỉ thấy 1 góc gương rời rạc $\implies$ `ignore = true`.
+3. **Người dắt xe máy:** Gộp thành **1 Bbox duy nhất**. Dắt sát lề đường $\implies$ `Pedestrian`; Dắt cắt ngang lòng đường $\implies$ `UNKNOWN_OBJECT` (`crossing`).
+4. **Xe máy chở kẹp 3, kẹp 4:** **CẤM TÁCH RIDER**. Gán 1 Bbox duy nhất ôm trọn người lái, khách, giỏ hàng và 2 bánh xe tiếp đất.
+5. **Xe máy tạt đầu (Cut-in) cự ly gần (<10m) lộ 1/3:** Bắt buộc vẽ Amodal Bbox ôm trọn thân xe ($1.8\text{m}$), cờ `motion: cut_in`, `lane: in_lane`, `dist: lt10m`.
 
 </div>
 <div>
 
-### [TA Q3] 10 CA BIÊN & CẤU HÌNH CVAT XML
-* **10 Ca biên Giao thông VN:**
-  1. Người sau cột lộ 1 chân: Amodal Bbox $50-80\%$.
-  2. Xe máy sau ô tô: Amodal nếu thấy tay lái; nếu chỉ thấy gương $\to$ ignore.
-  3. Người dắt xe máy: Gộp 1 Bbox, `Pedestrian` (lề) hoặc `UNKNOWN_OBJECT` (giữa làn).
-  4. Xe máy kẹp 3: Gộp 1 Bbox (CẤM tách rider).
-  5. Đèn pha lóa trắng nửa khung: Khoanh vùng lóa, `ignore = true`.
-  6. Giọt nước đọng kính lái: Check 3 frame không tịnh tiến $\to$ CẤM GÁN.
-  7. Đám đông dính khối: Không tách được $\to$ 1 Bbox lớn, `ignore = true`.
-  8. Cut-in lộ 1/3 thân xe: Amodal Bbox, `motion_state = cut_in`, `in_lane`.
-  9. Bóng phản chiếu đường ướt: CẤM GÁN.
-  10. Decal quảng cáo hông xe buýt: CẤM GÁN.
-* **CVAT Ops & Invariants:** Cờ `mutable: true` cho 8 thuộc tính động học (chống đè bẹp timeline track); Ánh xạ COCO $\to$ VinFast trong Nuclio YOLOv10; Bản đồ phím tắt `1-6`, `K` (Keyframe), `I` (Ignore).
+### NHÓM CA BIÊN QUANG HỌC & ĐÁM ĐÔNG PHỨC TẠP
+6. **Đèn pha xe tải ngược chiều lóa trắng:** Khoanh toàn bộ quầng sáng bão hòa ($Pixel=255$), gán `UNKNOWN_OBJECT`, cờ `ignore = true`.
+7. **Giọt nước đọng kính lái tạo bóng ma:** Lùi 3 frame liên tiếp; nếu không tịnh tiến quang học theo mặt đường $\implies$ **CẤM GÁN** (Artifact quang học).
+8. **Đám đông 3-5 người dính chặt:** Thấy $\ge 20\%$ cơ thể $\implies$ Bbox riêng; Dính chặt thành khối không phân tách $\implies$ 1 Bbox lớn, `ignore = true`.
+9. **Bóng phản chiếu đường ướt / kính showroom:** **CẤM GÁN BBOX**. Đáy Bbox kết thúc tại điểm tiếp đất của bánh xe/bàn chân thực.
+10. **Hình người in pano / hông xe buýt:** **CẤM TUYỆT ĐỐI GÁN BBOX**. Đối chiếu mặt phẳng chuyển động gắn với thân xe buýt.
+
+</div>
+</div>
+
+<div class="card-green">
+<strong>SỔ TAY QUYẾT ĐỊNH KỸ THUẬT (DECISION LOG):</strong> Mọi tình huống tranh cãi được lưu vết tại <code>decision_log.md</code> kèm cặp ảnh Good/Bad và mã quy định (ví dụ: QĐ-004), tạo cơ sở hồi tố (Retroactive Audit) khi cập nhật Guideline.
+</div>
+
+---
+
+# 9. TỔ C: BẢN ĐẶC TẢ TRIỂN KHAI KỸ THUẬT TRÊN NỀN TẢNG CVAT
+## Khóa Tử Huyệt `mutable: true`, JSON Spec CVAT 2.x, Ánh Xạ Nuclio & Phím Tắt Công Thái Học
+
+<div class="grid-2">
+<div>
+
+### 1. TỬ HUYỆT `mutable: true` & JSON SPEC CVAT 2.x
+* **Cờ `mutable: true` là sống còn:** Trong CVAT Track Mode, nếu thiếu `mutable: true`, thuộc tính bị khóa ở cấp Track. Khi xe máy đổi từ `near_lane` sang `in_lane` ở frame 20, CVAT sẽ **đè bẹp 19 frame trước thành `in_lane`**, phá hủy chuỗi thời gian va chạm!
+* **Bắt buộc `"mutable": true`** cho cả 8 thuộc tính động học và cờ.
+* **JSON Constructor Spec (CVAT 2.x REST API):**
+```json
+{
+  "name": "Pedestrian", "color": "#FF0000", "type": "rectangle",
+  "attributes": [
+    {"name": "lane_relation", "input_type": "radio", "mutable": true,
+     "values": ["in_lane", "near_lane", "out_of_lane"], "default_value": "out_of_lane"},
+    {"name": "distance_band", "input_type": "radio", "mutable": true,
+     "values": ["lt10m", "10to25m", "gt25m"], "default_value": "gt25m"},
+    {"name": "motion_state", "input_type": "select", "mutable": true,
+     "values": ["static", "along", "crossing", "cut_in"], "default_value": "static"}
+  ]
+}
+```
+
+</div>
+<div>
+
+### 2. ÁNH XẠ NUCLIO YOLOV10 & PHÍM TẮT CÔNG THÁI HỌC
+* **Ánh xạ Model-in-the-Loop (Nuclio Serverless Function):**
+  * COCO 0 (`person`) $\implies$ `Pedestrian`
+  * COCO 1 (`bicycle`) $\implies$ `Bicycle` (tự động gộp rider)
+  * COCO 2 (`car`) $\implies$ `Car`
+  * COCO 3 (`motorcycle`) $\implies$ `Motorcycle` (tự động gộp rider)
+  * COCO 5 (`bus`) & 7 (`truck`) $\implies$ `Bus_Truck`
+  * `UNKNOWN_OBJECT`: **CẤM tự động sinh bằng AI** để triệt tiêu phanh ma.
+* **Bản đồ Phím tắt Công thái học ($\ge 120\text{ box/h}$):**
+
+| Phím tắt (Hotkey) | Thao tác tương ứng trong CVAT |
+| :---: | :--- |
+| `1` đến `6` | Đổi nhanh 6 lớp (`1`: Ped, `2`: Moto, `3`: Bike, `4`: Car...) |
+| `Shift + N` | Tạo Bbox mới ở chế độ **Track Mode** |
+| `K` | Đặt **Keyframe** ghi nhận đổi tọa độ / thuộc tính |
+| `I` | Bật/tắt cờ **`ignore`** cho box $< 12\text{px}$ hoặc lóa |
+| `Shift + R` | Lật nhanh cờ rủi ro: `normal` $\to$ `threatening` |
+| `F` / `D` | Nhảy tiến / lùi 1 khung hình ($\Delta t = 500\text{ms}$) |
 
 </div>
 </div>
 
 ---
 
-# 8. TỔ D: ĐO LƯỜNG CHẤT LƯỢNG & TIÊU CHUẨN NGHIỆM THU LÔ [TA Q2, TA Q5]
+# 10. TỔ D: ĐO LƯỜNG CHẤT LƯỢNG & TIÊU CHUẨN NGHIỆM THU LÔ [TA Q2, TA Q5]
 ## Bác bỏ mAP, Sử dụng Miss Rate trên VRU Khóa Ngân sách FP & Chiến lược QC Bất đối xứng
 
 <div class="grid-2">
@@ -463,7 +535,7 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 
 ---
 
-# 9. GIAI ĐOẠN 9: RELEASE PACKET & GIAI ĐOẠN 10: GIÁM SÁT VẬN HÀNH
+# 11. GIAI ĐOẠN 9: RELEASE PACKET & GIAI ĐOẠN 10: GIÁM SÁT VẬN HÀNH
 ## Bộ Hồ sơ Xuất xưởng 5 Thành phần (S3 WORM), Đo lường Data Drift & Fleet Telemetry Loop
 
 <div class="grid-2">
@@ -496,7 +568,7 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 
 ---
 
-# 10. SỰ THẬT TRẦN TRỤI: ĐIỂM GÃY VỠ (SPOF) & 3 TẦNG BẢO VỆ [TA Q6]
+# 12. SỰ THẬT TRẦN TRỤI: ĐIỂM GÃY VỠ (SPOF) & 3 TẦNG BẢO VỆ [TA Q6]
 ## Thừa nhận Yếu điểm Con người tại Khâu Review QC & Kiến trúc Failsafe Chặn Đứng Sụp đổ
 
 <div class="grid-2">
