@@ -9,35 +9,36 @@ color: #e0e6ed
 style: |
   section {
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-    padding: 26px 40px;
-    font-size: 14px;
+    padding: 22px 36px;
+    font-size: 12.5px;
     background-color: #0b132b;
     color: #e0e6ed;
   }
   h1 {
-    font-size: 22px;
+    font-size: 20px;
     color: #38bdf8;
     margin-top: 0px;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     border-bottom: 2px solid #1e3a8a;
     padding-bottom: 3px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
   h2 {
-    font-size: 15px;
+    font-size: 14px;
     color: #60a5fa;
-    margin-top: 2px;
-    margin-bottom: 5px;
+    margin-top: 1px;
+    margin-bottom: 4px;
   }
   h3 {
-    font-size: 13.5px;
+    font-size: 12.5px;
     color: #93c5fd;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
+    margin-top: 2px;
   }
   p, li {
-    font-size: 13px;
-    line-height: 1.3;
+    font-size: 12px;
+    line-height: 1.28;
     margin-top: 1px;
     margin-bottom: 2px;
   }
@@ -45,58 +46,52 @@ style: |
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 11.5px;
-    margin-top: 4px;
-    margin-bottom: 5px;
+    font-size: 10.5px;
+    margin-top: 3px;
+    margin-bottom: 4px;
     background: #1e293b;
-    border-radius: 5px;
+    border-radius: 4px;
     overflow: hidden;
   }
   th {
     background-color: #1e3a8a;
     color: #ffffff;
-    padding: 4px 7px;
+    padding: 3px 6px;
     text-align: left;
     font-weight: 600;
     border: 1px solid #334155;
   }
   td {
-    padding: 3px 7px;
+    padding: 2.5px 6px;
     border: 1px solid #334155;
     color: #cbd5e1;
   }
   tr:nth-child(even) { background-color: #0f172a; }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .card-blue {
-    background: #0f172a; border-left: 4px solid #38bdf8; padding: 5px 8px; margin: 3px 0;
+    background: #0f172a; border-left: 4px solid #38bdf8; padding: 4px 7px; margin: 2px 0; font-size: 11.5px;
   }
   .card-red {
-    background: #1a0f1a; border-left: 4px solid #f43f5e; padding: 5px 8px; margin: 3px 0;
+    background: #1a0f1a; border-left: 4px solid #f43f5e; padding: 4px 7px; margin: 2px 0; font-size: 11.5px;
   }
   .card-green {
-    background: #062419; border-left: 4px solid #10b981; padding: 5px 8px; margin: 3px 0;
+    background: #062419; border-left: 4px solid #10b981; padding: 4px 7px; margin: 2px 0; font-size: 11.5px;
   }
   code {
     font-family: 'JetBrains Mono', monospace; background: #0f172a; color: #38bdf8;
-    padding: 1px 3px; border-radius: 3px; font-size: 11px;
+    padding: 1px 3px; border-radius: 3px; font-size: 10.5px;
   }
   pre {
     background: #0f172a; border: 1px solid #334155; border-radius: 4px;
-    padding: 5px 7px; font-size: 10.5px; line-height: 1.2; margin: 3px 0;
+    padding: 4px 6px; font-size: 9.8px; line-height: 1.18; margin: 2px 0;
   }
 ---
 
 <!-- _class: lead -->
 # ĐỀ TÀI Đ1: PHÁT HIỆN NGUY CƠ VA CHẠM CHO XE TỰ LÁI (VINFAST)
 ### DATA PIPELINE CHỐNG RÒ RỈ & BẢO ĐẢM TÍNH MẠNG TRONG 200MS
-**Nhóm 8 · Lớp 2B-D304** | Khung thời gian: **10 Phút Chuẩn mực** | 100% Data Architecture
+**Nhóm 8 · Lớp 2B-D304** | Khung thời gian: **8 Phút 30 Giây Chuẩn mực** | 100% Data Architecture
 
-<div class="card-blue">
-<strong>CHUẨN BỊ BATTLE THEO RUBRIC 100 ĐIỂM (AICB-P2T4):</strong>
-• <strong>8 Thành viên chia 4 Tổ (A, B, C, D)</strong> — Minh bạch trách nhiệm và sản phẩm bàn giao, không ai ngồi không.<br/>
-• <strong>Nguồn thực chiến:</strong> Khai thác bộ dữ liệu <strong>Nexar Collision Prediction</strong> (2.844 video dashcam, Kaggle / Hugging Face).<br/>
-• <strong>Trực diện 6 câu hỏi TA:</strong> Sẵn sàng bảo vệ chéo bằng số liệu vật lý, code thực thi và phân tích điểm gãy vỡ con người (SPOF).
-</div>
 
 ---
 
@@ -113,6 +108,10 @@ style: |
 | | **Thành viên 6** | Bộ 10 ca biên Edge Cases & Nhãn động học. | Hỗ trợ TA Q3 & Giải trình Decision Log. |
 | **D (ĐO LƯỜNG)**| **Thành viên 7 (Lead)**| Chiến lược GroupSplit chống rò rỉ, Ngưỡng QC. | **[TA Q2 - Lead]** Ma trận tổn thất & Asymmetric Loss. |
 | | **Thành viên 8** | Metric đo đạc (Miss Rate @ 0.1FP), Risk Audit. | **[TA Q5 - Lead] & [TA Q6 - Lead]** Đo lường & SPOF. |
+
+<div class="card-green">
+<strong>CAM KẾT TRUY CỨU TRÁCH NHIỆM:</strong> Không có chức danh điều phối ngồi không. Mọi thành viên đều làm chủ artifact kỹ thuật, phản biện độc lập trong 45 giây khi bị TA chỉ định bất ngờ.
+</div>
 
 ---
 
@@ -131,7 +130,7 @@ Quyết định **kích hoạt phanh khẩn cấp (AEB) / cảnh báo (FCW) / kh
 <strong>3 HỆ QUẢ KÉO THEO TOÀN BỘ PIPELINE:</strong><br/>
 1. Bỏ sót VRU đắt <strong>gấp 6.67 lần</strong> Phanh oan và <strong>gấp 200 lần</strong> sót vật ngoài làn ⇒ Ép QC theo Worst-Class Gate.<br/>
 2. Độ trễ 200ms ép giảm size ảnh ⇒ Vật &lt; 12px không đủ photon ⇒ Bắt buộc phải có <strong>Ignore Region</strong>.<br/>
-3. Chỉ Bbox là <strong>KHÔNG ĐỦ</strong> để phanh ⇒ Phải gán thêm vị trí làn (`in_lane`) và trạng thái chuyển động (`cut_in`).
+3. Chỉ Bbox là <strong>KHÔNG ĐỦ</strong> để phanh ⇒ Phải gán thêm vị trí làn (<code>lane_relation</code>) và trạng thái chuyển động (<code>motion_state</code>).
 </div>
 
 </div>
@@ -140,14 +139,14 @@ Quyết định **kích hoạt phanh khẩn cấp (AEB) / cảnh báo (FCW) / kh
 ### [TA Q2] LỖI NÀO ĐẮT HƠN? (COST MATRIX)
 *Bỏ sót người đi bộ trả giá bằng sinh mạng. Phanh ma gây dồn toa.*
 
-| Phân loại Lỗi & Ngữ cảnh | Trọng số (Cost) |
-| :--- | :---: |
-| **Sót người đi bộ (Trong làn, < 25m) (FN)** | **1000** |
-| **Sót xe máy (Trong làn, < 25m) (FN)** | **800** |
-| **Sót ô tô (Trong làn gần) (FN)** | 200 |
-| **Phanh oan (False Positive - Đâm dồn toa)** | **150** |
-| Cảnh báo oan (False Warning - Tài xế tắt ADAS) | 10 |
-| Sót vật ngoài làn / > 25m | 5 |
+| Phân loại Lỗi & Ngữ cảnh | Trọng số (Cost) | Vì sao (Căn cứ Kỹ thuật & Vật lý) |
+| :--- | :---: | :--- |
+| **Sót người đi bộ (Trong làn, < 25m)** | **1000** | Trực tiếp đe dọa sinh mạng con người. |
+| **Sót xe máy (Trong làn, < 25m)** | **800** | Mật độ xe máy tại VN cực cao, dễ ngã. |
+| **Sót ô tô (Trong làn gần)** | 200 | Thiệt hại tài sản, hiếm tử vong. |
+| **Phanh oan (False Positive)** | **150** | Xe sau đâm dồn toa (bám đuôi 1-2m ở VN). |
+| Cảnh báo oan (False Warning) | 10 | Phiền nhiễu, tài xế tắt ADAS. |
+| Sót vật ngoài làn / > 25m | 5 | Không giao cắt quỹ đạo di chuyển. |
 
 <div class="card-red">
 <strong>KẾT LUẬN TOÁN HỌC:</strong> Macro F1 hay mAP trung bình là ngụy biện! Toàn bộ Quality Gate được đặt trên lát cắt nguy hiểm nhất: <strong>Người đi bộ ban đêm phải đạt Recall 100%</strong>.
@@ -158,20 +157,19 @@ Quyết định **kích hoạt phanh khẩn cấp (AEB) / cảnh báo (FCW) / kh
 
 ---
 
-# 1. TỔ A: NGUỒN DỮ LIỆU NEXAR, QUARANTINE & QUOTA TẬP TEST
-## 2.844 Video Va chạm Thực tế & Luận điểm Ép Quota Lớp Hiếm (Bác bỏ Phân phối Tự nhiên)
+# 1. TỔ A: NGUỒN THỰC CHIẾN, QUARANTINE & ÉP QUOTA TEST [TA Q1]
+## 2.844 Video Nexar, Bổ khuyết DADA-2000 & Luận điểm Ép Quota Lớp Hiếm
 
 <div class="grid-2">
 <div>
 
 ### ĐA NGUỒN THỰC CHIẾN: NEXAR + DADA-2000
-* **Nexar (Kaggle/HuggingFace):** 2.844 video dashcam MP4 (720p @ 30fps). **CHỈ dùng cho va chạm Car/Truck** (vì Nexar loại bỏ VRU!).
-* **DADA-2000 / DoTA (2.000+ video):** Bổ sung các ca va chạm và suýt đâm **Người đi bộ & Xe máy (VRU Crash)**.
-* **In-house Dashcam VN:** 4 người × 2h = 8h video ngõ nhỏ VN.
-
-<div class="card-blue">
-<strong>KHU CÁCH LY (QUARANTINE BUCKET):</strong> File hỏng codec, mất CAN bus, desync &gt; 10ms, camera bẩn &gt; 20% bắt buộc đưa vào S3 Quarantine. Tuyệt đối không xóa mù!
-</div>
+* **Tử huyệt của Nexar (arXiv:2503.03848):** 2.844 video dashcam (720p @ 30fps) **CHỈ chứa va chạm Car/Truck, loại trừ toàn bộ VRU!**
+* **Cấu trúc Đa nguồn:**
+  1. *Nexar:* Nguồn va chạm dương tính cho Car/Truck.
+  2. *DADA-2000 / DoTA (2.000+ video):* Chuyên biệt cho **Người đi bộ băng đường & Xe máy tạt đầu (VRU Crash)**.
+  3. *In-house Dashcam VN:* 4 người × 2h = 8h video ngõ nhỏ VN.
+* **Khu Cách ly (Quarantine Bucket):** File hỏng codec, mất CAN bus, desync > 10ms, camera bẩn > 20% bắt buộc chuyển vào S3 quarantine bucket kèm `quarantine_ledger`. Tuyệt đối không xóa mù làm lệch mẫu số.
 
 </div>
 <div>
@@ -182,21 +180,25 @@ Quyết định **kích hoạt phanh khẩn cấp (AEB) / cảnh báo (FCW) / kh
 * **Thời tiết:** Clear (59.3%), Cloudy (32.4%), **Mưa (8.0%)**, Tuyết (<0.2%).
 * **Bối cảnh:** Đô thị (63.3%), Cao tốc (22.8%), Ngoại ô (10.0%).
 
-| Lát cắt Điều kiện (Slice) | Tự nhiên | Quota Ép Tập Test |
+| Lát cắt Môi trường / Ca nguy hiểm | Tự nhiên | Quota Ép Tập Test VinFast |
 | :--- | :---: | :--- |
 | **Ban đêm / Thiếu sáng** | **2.9%** | **≥ 25%** số khung hình |
-| **Mưa rào / Mặt đường ướt** | **8.0%** | **≥ 10%** số khung hình |
-| **Ngược sáng (Bình minh/Hầm)**| 0.9% | **≥ 8%** số khung hình |
-| **Người đi bộ cắt ngang đêm**| Cực hiếm | **≥ 300** instance |
-| **Xe máy/Ô tô tạt đầu (Cut-in)**| Cực hiếm | **≥ 200** sự kiện |
+| **Mưa rào / Mặt đường ướt phản quang** | **8.0%** | **≥ 10%** số khung hình |
+| **Ngược sáng (Bình minh / Ra khỏi hầm)**| 0.9% | **≥ 8%** số khung hình |
+| **Người đi bộ cắt ngang đường ban đêm**| Cực hiếm | **≥ 300** instance vật thể |
+| **Xe máy/Ô tô tạt đầu đột ngột (Cut-in)**| Cực hiếm | **≥ 200** sự kiện độc lập |
 
 </div>
+</div>
+
+<div class="card-blue">
+<strong>LUẬN ĐIỂM SẮC BÉN:</strong> Trong tự nhiên, Đêm chỉ chiếm 2.9% và Mưa chỉ chiếm 8.0%. Nếu chia ngẫu nhiên, mô hình đạt 97% độ chính xác dù hoàn toàn "mù" ban đêm! Ép Quota là yêu cầu sống còn cho xe tự lái.
 </div>
 
 ---
 
-# 2. TỔ B: DATA PIPELINE 6 BƯỚC & SCHEMA MANIFEST PARQUET
-## Thiết kế Khung Xử lý Công nghiệp, Khử PII Hai Lớp và Schema 24 Trường Đầy đủ
+# 2. TỔ B: DATA PIPELINE 6 BƯỚC & CƠ CHẾ CVAT MULTI-FRAME TRACKING
+## Dòng Chảy Dữ Liệu Công Nghiệp, Khử PII Hai Lớp và Bảng Loss-Check 5 Chỉ Số
 
 <div class="grid-2">
 <div>
@@ -205,7 +207,7 @@ Quyết định **kích hoạt phanh khẩn cấp (AEB) / cảnh báo (FCW) / kh
 ```text
 Video Thô (Nexar/DADA/In-house, 30fps)
   ├─1. Tách Keyframe 2 fps ───────────► Giảm 15x, nhúng trip_id vào file
-  ├─2. Khử Trùng lặp (pHash) ─────────► Lọc khung đèn đỏ, copy ra output
+  ├─2. Khử Trùng lặp (pHash) ─────────► Lọc khung đèn đỏ, buffer 30 frames
   ├─3. ẨN DANH 2 LỚP (Face + Plate) ──► CỔNG CHẶN PHÁP LÝ (Nghị định 13)
   ├─4. AI Pre-label (Nuclio Serverless)► YOLOv10 sinh candidate boxes (conf>0.6)
   ├─5. CVAT Multi-Frame Track Mode ───► Nội suy TransT/SAM2 + Lật cờ risk_status
@@ -213,34 +215,25 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 ```
 
 <div class="card-blue">
-<strong>ẨN DANH PII & ĐỐI SOÁT CHUYỂN ĐỔI (LOSS-CHECK):</strong><br/>
-• <strong>PII Miss Rate:</strong> $\text{Miss} = \frac{\text{Vùng sót}}{\text{Vùng thật}} \le 0.001\%$. Giám sát riêng: Mặt vs Biển số, và đo riêng slice <strong>Đêm & Mưa</strong> (nơi detector dễ suy thoái).<br/>
-• <strong>Bảng Loss-Check 5 Chỉ số (CVAT → Parquet):</strong> Đếm đối chiếu đầu vào/ra: (1) Số shape/box, (2) Số track_id, (3) Số class & map, (4) Số attribute có giá trị, (5) Số frame có nhãn. Sai lệch = 0!
+<strong>CVAT MULTI-FRAME TRACK MODE:</strong><br/>
+• Keyframe t=0 và t=30, CVAT tự động nội suy tọa độ 29 frame ở giữa (giảm 90% công vẽ tay).<br/>
+• Lật cờ timeline: <code>risk_status: normal → threatening → colliding</code>.
 </div>
 
 </div>
 <div>
 
-### SCHEMA FLAT MANIFEST (24 TRƯỜNG TRÊN PARQUET)
-*Lưu trữ 1 dòng = 1 vật thể trong 1 khung. Query Polars/DuckDB cực nhanh:*
+### ẨN DANH 2 LỚP & BẢNG LOSS-CHECK 5 CHỈ SỐ
+* **Ẩn danh PII 2 lớp:** CenterFace (+10% viền, Gauss $\sigma=15$) + License Plate Detector. Tỷ lệ sót PII $\le 0.001\%$, đo riêng slice Đêm & Mưa.
+* **Bảng Loss-Check 5 Chỉ số (CVAT → Parquet):**
 
-```yaml
-- Định danh: trip_id, frame_id, timestamp_sec, img_path
-- Kích thước ảnh: img_w (1280), img_h (720)
-- Tọa độ Bbox: obj_id, class_name, x_min, y_min, w, h
-- Che khuất: occlusion_level (0-25, 25-50, 50-80, >80), truncated
-
-# THUỘC TÍNH ĐỘNG HỌC & RỦI RO PHỤC VỤ PHANH AEB:
-- lane_relation: [in_lane, near_lane, out_of_lane]
-- distance_band: [lt10m, 10to25m, gt25m]
-- motion_state: [static, along, crossing, cut_in]
-- risk_status: [normal, threatening, colliding, post_crash]
-
-# KIỂM SOÁT ZERO-LOSS & AUDIT PROVENANCE:
-- ignore: bool           # Bbox < 12px, lóa photon (Zero-loss)
-- prelabel_modified: bool # True nếu annotator có chỉnh sửa
-- lighting, weather, annotator_id, qc_status, anon_version
-```
+| STT | Chỉ số Kiểm soát (Loss-Check) | CVAT Raw | Parquet Out | Tiêu chuẩn |
+| :---: | :--- | :---: | :---: | :--- |
+| **1** | **Tổng số Bounding Box** | $N_{\text{in}}$ | $N_{\text{out}}$ | Khớp 100% (0 rụng box) |
+| **2** | **Tổng số Track ID** | $T_{\text{in}}$ | $T_{\text{out}}$ | Không đứt gãy track |
+| **3** | **Phân bố Lớp Nhãn (Classes)** | $C_{\text{in}}$ | $C_{\text{out}}$ | Khớp 6 lớp danh mục |
+| **4** | **Thuộc tính có giá trị (Populated)**| $A_{\text{in}}$ | $A_{\text{out}}$ | 100% đủ `lane`, `motion` |
+| **5** | **Số Frame có ít nhất 1 nhãn** | $F_{\text{in}}$ | $F_{\text{out}}$ | Không rụng khung hình |
 
 </div>
 </div>
@@ -253,24 +246,22 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 <div class="grid-2">
 <div>
 
-### 1. KIẾN TRÚC TIỀN XỬ LÝ & KHỬ PII HAI LỚP
-* **Trích xuất Keyframe (2 fps):** Chu kỳ lấy mẫu $\Delta t = 500\text{ms}$ giảm tải $15\times$ khối lượng lưu trữ. Định danh `trip_id` được nhúng trực tiếp vào cấu trúc tên tệp và metadata để bảo toàn Group Key.
-* **Cổng khử PII Khuôn mặt:** Áp dụng mạng CenterFace, mở rộng biên cục bộ $10\%$ và làm mờ Gauss ($\sigma=15$).
-* **Cổng khử PII Biển số xe:** Tích hợp bộ dò biển số chuyên dụng (Plate Detector), khử khuẩn toàn bộ phương tiện giao thông.
+### 1. KIẾN TRÚC TIỀN XỬ LÝ & LỌC TRÙNG pHASH
+* **Trích xuất Keyframe (2 fps):** Chu kỳ lấy mẫu $\Delta t = 500\text{ms}$ giảm tải $15\times$ khối lượng lưu trữ. Định danh `trip_id` được nhúng trực tiếp vào cấu trúc tên tệp `{trip_id}_{frame_idx:06d}.jpg` để bảo toàn Group Key.
 * **Lọc Trùng lặp Nhận thức pHash (Perceptual Hash):**
-  * Mã hóa chuỗi băm 64-bit qua biến đổi Cosine rời rạc (DCT).
-  * Bộ đệm trượt 30 khung hình gần nhất: Loại bỏ khung hình nếu khoảng cách Hamming $d_H \le 8$ (dừng đèn đỏ, kẹt xe tĩnh).
+  * Mã hóa chuỗi băm 64-bit qua biến đổi Cosine rời rạc (DCT $8 \times 8$).
+  * Bộ đệm trượt 30 khung hình gần nhất: Loại bỏ khung hình nếu khoảng cách Hamming $d_H(h_t, h_{t-k}) \le 8$ với mọi $k \in [1, 30]$ (dừng đèn đỏ, kẹt xe tĩnh).
+* **Cổng khử PII:** CenterFace + Bộ dò biển số xe, đảm bảo tỷ lệ sót $\le 0.001\%$, bảo tồn nguyên vẹn quần áo, dáng người và đèn tín hiệu xe.
 
 </div>
 <div>
 
 ### 2. [TA Q4] CƠ CHẾ CHỐNG RÒ RỈ DỮ LIỆU THỜI GIAN
-* **Khóa Chết Group Key `trip_id`:** Mọi khung hình của cùng một chuyến đi bắt buộc phải nằm trọn vẹn trong duy nhất 1 tập con.
-* **Phân bổ Tỷ lệ:** Huấn luyện ($70\%$), Kiểm định ($15\%$), Đánh giá ($15\%$).
+* **Khóa Chết Group Key `trip_id`:** Mọi khung hình của cùng một chuyến đi bắt buộc nằm trọn trong duy nhất 1 tập con. Tỷ lệ: Train ($70\%$), Val ($15\%$), Test ($15\%$).
 * **Ràng buộc Tập hợp Bất biến (Zero-Leakage Invariant):**
   $$\text{Trips}_{\text{Train}} \cap \text{Trips}_{\text{Val}} = \emptyset, \quad \text{Trips}_{\text{Train}} \cap \text{Trips}_{\text{Test}} = \emptyset, \quad \text{Trips}_{\text{Val}} \cap \text{Trips}_{\text{Test}} = \emptyset$$
 * **Kiểm toán Cận trùng lặp xuyên tập:** Quét pHash giữa Train và Test, cam kết **0 cặp khung hình** có khoảng cách Hamming $d_H \le 8$.
-* **Thực nghiệm Ablation Proof:** Điểm mAP chia ngẫu nhiên đạt $94.2\%$ (học thuộc lòng bối cảnh), chia theo `trip_id` đạt $81.5\%$. Chênh lệch $12.7\%$ chứng minh lượng thông tin rò rỉ đã bị triệt tiêu hoàn toàn.
+* **Thực nghiệm Ablation Proof:** Điểm mAP chia ngẫu nhiên đạt $94.2\%$ (học thuộc lòng bối cảnh), chia theo `trip_id` đạt $81.5\%$. Chênh lệch $12.7\%$ chứng minh lượng thông tin rò rỉ đã bị triệt tiêu!
 
 </div>
 </div>
@@ -281,47 +272,162 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 
 ---
 
-# 4. TỔ C: GUIDELINE, AMODAL BOX, PILOT & 10 CA BIÊN [TA Q3]
-## Thử nghiệm Kép 30 Ảnh, Quy tắc Bỏ qua (Ignore Region), Quyền Abstain & Decision Log
+# 4. TỔ B: HỢP ĐỒNG DỮ LIỆU & SCHEMA MANIFEST PARQUET 24 TRƯỜNG
+## Lưu trữ Flat Table trên Apache Parquet (Snappy, 64MB Chunk) — Truy vấn Polars/DuckDB Siêu Tốc
 
 <div class="grid-2">
 <div>
 
-### QUY TẮC CHE KHUẤT (OCCLUSION) & AMODAL BOX
-* Vẽ box **Amodal** (trùm lên cả phần bị che khuất). Hệ thống phanh va chạm theo *thể tích vật lý thực*, không theo *pixel*.
-* **Pilot Gate (30 ảnh):** Bắt buộc chạy thử trên 30 ảnh ca khó, đạt **Cohen's Kappa κ ≥ 0.85** và **mIoU ≥ 0.70** mới mở gán đại trà.
-
-| Mức độ Che khuất | Nhóm VRU (Người đi bộ, Xe máy) | Nhóm Xe lớn / Vật tĩnh |
-| :--- | :--- | :--- |
-| **0 – 50%** | Gán Bbox bình thường. | Gán Bbox bình thường. |
-| **50 – 80%** | **Bắt buộc gán Amodal Bbox**, cờ `occlusion`. | Gán nếu suy được biên. |
-| **> 80%** | Bật cờ `ignore = true` (Zero-loss). | Bật cờ `ignore = true`. |
-
-### IGNORE REGION & QUYỀN ABSTAIN
-* **Ignore Region:** Box cao **< 12px** hoặc lóa sáng bão hòa ⇒ Gán `ignore = true`. Không tính TP, **KHÔNG PHẠT FP**.
-* **Quyền Abstain:** Khi ảnh quá mờ (sương mù dày), Annotator được **Abstain (Không chốt)**, ghi tag `can_xem_lai` đẩy sang Decision Log.
+### NHÓM 1: ĐỊNH DANH, HÌNH HỌC & CHE KHUẤT
+* **1. Định danh & Tọa độ Ảnh (Image-level):**
+  * `trip_id`: string (NOT NULL) — **Group Key bất biến**.
+  * `frame_id`: string (NOT NULL) — `{trip_id}_{frame_idx:06d}`.
+  * `timestamp_sec`: float32 (NOT NULL, $\ge 0.0$) — $\Delta t = 0.5\text{s}$.
+  * `img_path`: string (NOT NULL) — Đường dẫn tương đối file ảnh.
+  * `img_w`: int16 (1280), `img_h`: int16 (720).
+* **2. Hình học Bounding Box:**
+  * `obj_id`: int32 (NOT NULL) — Tracking ID xuyên suốt trip.
+  * `class_name`: string (NOT NULL) — 6 lớp chuẩn ADAS.
+  * `x_min`, `y_min`, `w`, `h`: float32 — Tọa độ pixel tuyệt đối.
+* **3. Che khuất & Mép ảnh:**
+  * `occlusion_level`: string — `[0-25%, 25-50%, 50-80%, >80%]`.
+  * `truncated`: bool — Chạm mép ảnh và phần thấy $\ge 25\%$.
 
 </div>
 <div>
 
-### [TA Q3] 10 CA BIÊN & QUY TẮC XỬ LÝ TRIỆT ĐỂ
-1. **Người sau cột, lộ 1 chân:** Gán Amodal Bbox, cờ `occlusion: 50-80%`.
-2. **Xe máy sau ô tô, thấy 1 gương:** Nếu thấy tay lái ⇒ Gán Amodal xe máy. Nếu chỉ thấy gương rời rạc ⇒ `ignore = true`.
-3. **Người dắt xe máy:** Gộp 1 Bbox, gán `Pedestrian` (hoặc `UNKNOWN_OBJECT` nếu dắt ngang giữa lòng đường).
-4. **Xe máy chở 3:** Gộp 1 Bbox duy nhất (CẤM tách lớp rider).
-5. **Đèn pha ngược chiều lóa trắng:** Khoanh vùng lóa, `ignore = true`.
-6. **Giọt nước kính lái tạo bóng ma:** Check 3 frames; nếu không tịnh tiến theo chuyển động đường ⇒ **KHÔNG GÁN** (Artifact).
-7. **Đám đông 3 người chồng lấp:** Gán riêng nếu thấy rõ ≥ 20% cơ thể. Nếu dính chặt không tách được ⇒ Gán 1 Bbox, `ignore = true`.
-8. **Xe máy tạt đầu (Cut-in) lộ 1/3:** Bắt buộc gán Amodal, cờ `motion_state = cut_in` và `lane_relation = in_lane`.
-9. **Bóng người phản chiếu trên đường/kính:** **CẤM GÁN**.
-10. **Hình in người trên xe buýt quảng cáo:** **CẤM GÁN**.
+### NHÓM 2: ĐỘNG HỌC PHANH, ZERO-LOSS & METADATA
+* **4. Động học & Quyết định Phanh AEB:**
+  * `lane_relation`: string — `[in_lane, near_lane, out_of_lane]`.
+  * `distance_band`: string — `[lt10m, 10to25m, gt25m]`.
+  * `motion_state`: string — `[static, along, crossing, cut_in]`.
+  * `risk_status`: string — `[normal, threatening, colliding, post_crash]`.
+* **5. Cờ Kiểm soát Zero-Loss & Giám sát Bias:**
+  * `ignore`: bool — Zero-loss ($Loss = 0$): Bbox $< 12\text{px}$, lóa trắng, che $> 80\%$.
+  * `prelabel_modified`: bool — True nếu annotator có sửa đề xuất AI.
+* **6. Metadata Môi trường & Audit:**
+  * `lighting`: `[daylight, twilight, night_lit, night_dark, glare]`.
+  * `weather`: `[clear, cloudy, rain, fog]`.
+  * `annotator_id`, `qc_status`, `anon_version`.
+
+</div>
+</div>
+
+<div class="card-blue">
+<strong>HIỆU NĂNG TRUY VẤN:</strong> Định dạng Parquet cho phép lọc Slice-based Evaluation (ví dụ: tìm người đi bộ đêm trong làn &lt; 25m) trên hàng triệu dòng chỉ mất &lt; 50ms bằng Polars/DuckDB.
+</div>
+
+---
+
+# 5. TỔ C: BẢN ĐẶC TẢ DANH MỤC 6 LỚP NHÃN (LABELS TAXONOMY)
+## Quy Chuẩn Ranh Giới Hộp Bao, Đồng Bộ Kinematic Collision Footprint & Tiêu Chuẩn Loại Trừ
+
+<div class="grid-2">
+<div>
+
+### NHÓM ĐỐI TƯỢNG YẾU THẾ (VRU - COST 800 - 1000)
+* **`Pedestrian` (ID: 0):** Người đi, chạy, đứng, cúi, ngã/nằm trên đường; người đi xe lăn, người đẩy xe nôi.
+  * *Bbox:* Từ đỉnh đầu/mũ đến gót giày tiếp đất; bao trùm ba lô, túi xách, ô dù che mưa. Điểm tiếp đất $(x_g, y_g)$ neo tính IPM. Ngưỡng $h \ge 12\text{px}$.
+* **`Motorcycle` (ID: 1):** Xe máy số, tay ga, xe điện (VinFast Klara, Feliz, Evo...).
+  * *Bbox:* **CẤM TÁCH LỚP RIDER**. Gộp người lái, khách kẹp 2-3, gương, ống bô và bánh xe thành 1 Bbox va chạm vật lý duy nhất.
+  * *Áo mưa cánh dơi:* Bao trọn tà áo phập phồng nếu mở rộng $\ge 10\text{cm}$.
+  * *Hàng cồng kềnh:* Bắt buộc mở rộng Bbox bao trùm bình gas, sọt hoa quả.
+* **`Bicycle` (ID: 2):** Xe đạp cơ, trợ lực điện. Gộp người đạp và xe thành 1 Bbox.
+
+</div>
+<div>
+
+### NHÓM XE CƠ GIỚI & CHƯỚNG NGẠI VẬT MẶT ĐƯỜNG
+* **`Car` (ID: 3):** Sedan, SUV, CUV, Bán tải. Bao trùm 4 mép vỏ xe, gương chiếu hậu, lốp xe tiếp đất và giá chở hàng nóc xe (roof-rack).
+* **`Bus_Truck` (ID: 4):** Xe buýt VinBus, xe tải, container.
+  * *QUY TẮC SỐNG CÒN:* **BẮT BUỘC bao trùm thép cây/tôn cuộn thò ra đuôi xe** (chống tai nạn xuyên thủng kính lái).
+  * *Jack-knifing:* Tách thành 2 Bbox khi xe đầu kéo cua gập góc chữ L.
+* **`UNKNOWN_OBJECT` (ID: 5):** Vật cản mặt đường $\ge 20\text{cm}$ ở cự ly $< 40\text{m}$ (mảnh lốp xe tải nổ, dải phân cách xô lệch, trâu bò qua đường).
+* **NEGATIVE EXCLUSION (CẤM GÁN):** Pano quảng cáo, decal hông xe buýt, bóng đổ mặt đường, hình phản chiếu qua vũng nước/kính.
+
+</div>
+</div>
+
+<div class="card-red">
+<strong>NGUYÊN TẮC BẤT BIẾN:</strong> Hệ thống phanh tự động (AEB) can thiệp theo thể tích va chạm cơ học thực tế. Tách rời người lái khỏi xe máy là sai lầm chết người làm thuật toán phanh ước tính sai tiết diện va chạm!
+</div>
+
+---
+
+# 6. TỔ C: BẢN ĐẶC TẢ THUỘC TÍNH KỸ THUẬT & QUYẾT ĐỊNH PHANH AEB
+## Ánh Xạ Thuộc Tính Hình Học và Động Lực Học Sang Bộ Điều Khiển Phanh Xe Tự Lái
+
+<div class="grid-2">
+<div>
+
+### 1. QUAN HỆ KHÔNG GIAN LÀN XE (`lane_relation`)
+*Hành lang an toàn phanh xe VF8 ($W_{\text{ego}}=1.93\text{m}$, corridor rộng $3.0\text{m}$):*
+* **`in_lane` ($|x_{\text{lat}}| \le 1.75\text{m}$):** Điểm tiếp đất nằm trong làn xe. **Kích hoạt logic AEB Phanh Khẩn Cấp**. Vật thể nằm trực tiếp trên quỹ đạo va chạm!
+* **`near_lane` ($1.75\text{m} < |x_{\text{lat}}| \le 3.25\text{m}$):** Nằm trong vùng đệm $\le 1.5\text{m}$ ngoài mép làn. **Kích hoạt FCW & Nạp sẵn dầu phanh (Pre-fill)**.
+* **`out_of_lane` ($|x_{\text{lat}}| > 3.25\text{m}$):** Nằm ngoài vùng đệm (> 1.5m, vỉa hè). **Theo dõi Thụ động**, CẤM phanh để tránh đâm dồn toa (Cost 150).
+
+### 2. PHÂN TẦNG CỰ LY PHANH (`distance_band`)
+*Động lực học xe 50 km/h: Quãng đường dừng $15.1\text{m}$ (khô), $22.5\text{m}$ (ướt):*
+* **`lt10m` (< 10m):** Vùng tử vong ($y_{\text{bottom}} \ge 540\text{px}$, $h_{\text{ped}} > 140\text{px}$). Phanh $100\%$ lực để giảm xung lực va chạm (Mitigation).
+* **`10to25m` (10-25m):** Vùng vàng can thiệp ($420\text{px} \le y_{\text{bottom}} < 540\text{px}$). Đủ cự ly phanh dừng hẳn xe an toàn.
+* **`gt25m` (> 25m):** Vùng nhận thức tầm xa ($y_{\text{bottom}} < 420\text{px}$). Theo dõi track.
+
+</div>
+<div>
+
+### 3. ĐỘNG HỌC VECTOR & ZERO-LOSS CONTROL
+* **`motion_state` (Động học vector qua 2 keyframes $\Delta t = 500\text{ms}$):**
+  * `static`: Vận tốc thực tế $< 0.5\text{km/h}$ (xe đỗ, người đứng chờ).
+  * `along`: Di chuyển cùng/ngược chiều dọc làn ($\pm 30^\circ$ so với trục đường).
+  * `crossing`: Vector vận tốc ngang $v_{\text{lat}} \ge 0.5\text{m/s}$ cắt ngang qua đường.
+  * `cut_in`: Tạt đầu đột ngột vào hành lang làn ở cự ly $< 25\text{m}$ với $v_{\text{lat}} \ge 1.0\text{m/s}$. **Nguy cấp số 1 $\implies$ Kích hoạt chuông FCW và nạp phanh**.
+* **`risk_status` (Timeline CVAT):** `normal` ($TTC > 3.0\text{s}$) $\to$ `threatening` ($TTC \le 2.0\text{s}$) $\to$ `colliding` ($TTC < 0.3\text{s}$) $\to$ `post_crash`.
+* **`ignore` (Zero-loss mask $Loss = 0$):** Bắt buộc kích hoạt khi $h < 12\text{px}$, lóa trắng photon ($Pixel = 255$), che khuất $> 80\%$, vệt nước mờ $> 50\%$.
+* **`prelabel_modified`:** Đo tỷ lệ sửa đề xuất AI (PMR). Nếu PMR $< 5\%$ cảnh báo nhân viên lười duyệt ẩu (Anchoring Bias).
 
 </div>
 </div>
 
 ---
 
-# 5. TỔ D: ĐO LƯỜNG CHẤT LƯỢNG & TIÊU CHUẨN NGHIỆM THU LÔ [TA Q5]
+# 7. TỔ C: QUY TẮC AMODAL, IGNORE, 10 CA BIÊN & CVAT XML [TA Q3]
+## Thử Nghiệm Pilot Kép 30 Ảnh, Ma Trận Che Khuất, Quyền Abstain & Cấu Hình Máy Đọc Được
+
+<div class="grid-2">
+<div>
+
+### PILOT GATE, AMODAL & QUYỀN ABSTAIN
+* **Pilot Gate (30 ảnh):** Bắt buộc mù đôi đạt **Cohen's Kappa $\kappa \ge 0.85$** và **$\text{mIoU} \ge 0.70$** mới mở gán nhãn đại trà.
+* **Ma trận Che khuất Amodal:**
+  * $0-25\%$: Vẽ Bbox sát viền nhìn thấy.
+  * $25-50\%$: Vẽ Amodal Bbox suy luận viền vật lý.
+  * $50-80\%$: **BẮT BUỘC vẽ Amodal Bbox**, loss tính 100% cho VRU.
+  * $>80\%$: Vẽ Amodal giữ Track ID, **bắt buộc cắm cờ `ignore = true`**.
+* **Quyền Abstain (Không đoán mò):** Gặp sương mù dày/mù quang học, Annotator bấm Abstain gắn tag `can_xem_lai`, đẩy sang hội đồng phân xử cảm biến **Radar 77GHz**.
+
+</div>
+<div>
+
+### [TA Q3] 10 CA BIÊN & CẤU HÌNH CVAT XML
+* **10 Ca biên Giao thông VN:**
+  1. Người sau cột lộ 1 chân: Amodal Bbox $50-80\%$.
+  2. Xe máy sau ô tô: Amodal nếu thấy tay lái; nếu chỉ thấy gương $\to$ ignore.
+  3. Người dắt xe máy: Gộp 1 Bbox, `Pedestrian` (lề) hoặc `UNKNOWN_OBJECT` (giữa làn).
+  4. Xe máy kẹp 3: Gộp 1 Bbox (CẤM tách rider).
+  5. Đèn pha lóa trắng nửa khung: Khoanh vùng lóa, `ignore = true`.
+  6. Giọt nước đọng kính lái: Check 3 frame không tịnh tiến $\to$ CẤM GÁN.
+  7. Đám đông dính khối: Không tách được $\to$ 1 Bbox lớn, `ignore = true`.
+  8. Cut-in lộ 1/3 thân xe: Amodal Bbox, `motion_state = cut_in`, `in_lane`.
+  9. Bóng phản chiếu đường ướt: CẤM GÁN.
+  10. Decal quảng cáo hông xe buýt: CẤM GÁN.
+* **CVAT XML Config:** File cấu hình XML chuẩn hóa 6 labels và 8 attributes sẵn sàng import trực tiếp vào CVAT Task.
+
+</div>
+</div>
+
+---
+
+# 8. TỔ D: ĐO LƯỜNG CHẤT LƯỢNG & TIÊU CHUẨN NGHIỆM THU LÔ [TA Q2, TA Q5]
 ## Bác bỏ mAP, Sử dụng Miss Rate trên VRU Khóa Ngân sách FP & Chiến lược QC Bất đối xứng
 
 <div class="grid-2">
@@ -330,7 +436,7 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 ### [TA Q5] METRIC ĐO ĐẠC: MISS RATE TRÊN VRU
 * **Bác bỏ mAP tổng hợp:** mAP đánh đồng việc bỏ sót mạng người với bỏ sót một thùng rác ven đường.
 * **Chỉ số Sống còn:** **Miss Rate trên VRU** (Người đi bộ/Xe máy) trong làn và khoảng cách nguy hiểm $< 25\text{m}$:
-  $$\text{Miss Rate}_{\text{VRU}} = \frac{\text{FN}}{\text{TP} + \text{FN}} \times 100\% \quad (\text{Mẫu số: Tổng số VRU thực tế})$$
+  $$\text{Miss Rate}_{\text{VRU}} = \frac{\text{FN}_{\text{VRU}}}{\text{TP}_{\text{VRU}} + \text{FN}_{\text{VRU}}} \times 100\% \quad (\text{Mẫu số: Tổng số VRU thực tế})$$
 * **Khóa Ngân sách Phanh ma:** Giới hạn $\le 0.1\text{ FP / khung hình}$ trên luồng nhận thức thô. Sau đó bắt buộc lọc 3 frames liên tiếp.
 * **Quy mô Mẫu:** Test tối thiểu 300 người đi bộ đêm, 200 cut-in.
 * **Ai đo:** Tổ D audit độc lập bằng gán Đôi Mù 100% trên Test.
@@ -357,7 +463,7 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 
 ---
 
-# 6. GIAI ĐOẠN 9: RELEASE PACKET & GIAI ĐOẠN 10: GIÁM SÁT VẬN HÀNH
+# 9. GIAI ĐOẠN 9: RELEASE PACKET & GIAI ĐOẠN 10: GIÁM SÁT VẬN HÀNH
 ## Bộ Hồ sơ Xuất xưởng 5 Thành phần (S3 WORM), Đo lường Data Drift & Fleet Telemetry Loop
 
 <div class="grid-2">
@@ -365,9 +471,9 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 
 ### BƯỚC 9: ĐÓNG GÓI RELEASE PACKET v1.0
 *Chốt chặn cuối cùng: Data Owner (TV1) chỉ ký duyệt khi đủ 5 phần:*
-1. **Frozen Artifacts & SHA-256:** Cấp mã băm **SHA-256** (đổi 1 pixel thay đổi hash), khóa ghi **S3 Object Lock (WORM)**.
-2. **Dataset Lineage:** Ghi lịch sử nguồn gốc: hash script transform, version guideline v1.1 để truy vết kết quả.
-3. **Data Split Manifest:** `split_manifest.json` giao thoa theo `trip_id` = $0.00\%$, chặn **mAP tăng cao giả tạo do rò rỉ**.
+1. **Frozen Artifacts & SHA-256 Checksum:** Ảnh nén kèm nhãn Parquet/COCO. Cấp mã băm **SHA-256**, bật chế độ **S3 Object Lock (WORM)** chống can thiệp sau đóng băng.
+2. **Dataset Lineage & Version Control:** Ghi vết bất biến `dataset_version: v1.0.0`, hash commit pipeline, version guideline v1.2.
+3. **Data Split Manifest:** `split_manifest.json` chứng minh giao thoa `trip_id` = $0.00\%$, chặn **mAP tăng cao giả tạo do rò rỉ**.
 4. **Báo cáo Kiểm toán QC:** Biên bản audit 20% + Honeypot 5%, xác nhận $\text{Miss Rate}_{\text{PII}} \le 0.001\%$.
 5. **Dataset Card Chuẩn hóa:** Khớp 5 chỉ số Loss-Check, công bố ODD & Known Limitations (kính bẩn > 30%, tuyết).
 
@@ -380,7 +486,7 @@ Video Thô (Nexar/DADA/In-house, 30fps)
    * Cảnh báo khi $\text{PSI} > 0.2$ so với phân phối train gốc.
 2. **Fleet Telemetry Trigger (Hành vi tài xế là chân lý):**
    * *Tài xế đạp thốc ga đè phanh:* Phanh oan (FP) ⇒ Lưu 15s clip.
-   * *Tài xế phanh gấp / giật lái né vật:* Bỏ sót (FN) ⇒ Lưu 15s clip.
+   * *Tài xế phanh gấp > 0.6g né vật:* Bỏ sót (FN) ⇒ Lưu 15s clip.
 3. **Giao thức Sửa lỗi Tận gốc (Root Cause Rework):**
    * CẤM sửa lẻ tẻ từng ảnh!
    * Họp Adjudication ⇒ Cập nhật Guideline v1.2 ⇒ **Hồi tố (Retroactive Audit)** quét lại các batch cũ xuất xưởng.
@@ -390,7 +496,7 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 
 ---
 
-# 7. SỰ THẬT TRẦN TRỤI: ĐIỂM GÃY VỠ (SPOF) & 3 TẦNG BẢO VỆ [TA Q6]
+# 10. SỰ THẬT TRẦN TRỤI: ĐIỂM GÃY VỠ (SPOF) & 3 TẦNG BẢO VỆ [TA Q6]
 ## Thừa nhận Yếu điểm Con người tại Khâu Review QC & Kiến trúc Failsafe Chặn Đứng Sụp đổ
 
 <div class="grid-2">
