@@ -213,9 +213,9 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 ```
 
 <div class="card-blue">
-<strong>ẨN DANH 2 LỚP & CVAT TRACK MODE:</strong>
-• <strong>Ẩn danh:</strong> <code>deface</code> (Mặt) + <code>yolov8n-plate</code> (Biển số).<br/>
-• <strong>CVAT Track Mode:</strong> Keyframe t=0 và t=30, CVAT tự nội suy 29 frame giữa. Lật cờ timeline: <code>risk_status: normal → threatening → colliding</code>.
+<strong>ẨN DANH PII & ĐỐI SOÁT CHUYỂN ĐỔI (LOSS-CHECK):</strong><br/>
+• <strong>PII Miss Rate:</strong> $\text{Miss} = \frac{\text{Vùng sót}}{\text{Vùng thật}} \le 0.001\%$. Giám sát riêng: Mặt vs Biển số, và đo riêng slice <strong>Đêm & Mưa</strong> (nơi detector dễ suy thoái).<br/>
+• <strong>Bảng Loss-Check 5 Chỉ số (CVAT → Parquet):</strong> Đếm đối chiếu đầu vào/ra: (1) Số shape/box, (2) Số track_id, (3) Số class & map, (4) Số attribute có giá trị, (5) Số frame có nhãn. Sai lệch = 0!
 </div>
 
 </div>
@@ -365,11 +365,11 @@ Video Thô (Nexar/DADA/In-house, 30fps)
 
 ### BƯỚC 9: ĐÓNG GÓI RELEASE PACKET v1.0
 *Chốt chặn cuối cùng: Data Owner (TV1) chỉ ký duyệt khi đủ 5 phần:*
-1. **Clean Data Artifacts:** Ảnh nén + Parquet/COCO. Cấp mã băm **SHA-256**, khóa quyền ghi bằng **S3 Object Lock (WORM)**.
-2. **Data Split Manifest:** `split_manifest.json` chứng minh giao thoa theo `trip_id` bằng chính xác $0.00\%$.
-3. **Báo cáo Kiểm toán QC:** Biên bản audit 20% + Honeypot 5%, xác nhận tỷ lệ sót PII $\le 0.001\%$.
-4. **Verification Test Suite:** Script CI/CD xác nhận 0 tọa độ NaN, 0 box tràn viền, 0 box âm.
-5. **Dataset Card Chuẩn hóa:** Công bố rõ ODD và **Known Limitations** (Giới hạn: kính bám bùn > 30% hoặc tuyết dày).
+1. **Frozen Artifacts & SHA-256:** Cấp mã băm **SHA-256** (đổi 1 pixel thay đổi hash), khóa ghi **S3 Object Lock (WORM)**.
+2. **Dataset Lineage:** Ghi lịch sử nguồn gốc: hash script transform, version guideline v1.1 để truy vết kết quả.
+3. **Data Split Manifest:** `split_manifest.json` giao thoa theo `trip_id` = $0.00\%$, chặn **mAP tăng cao giả tạo do rò rỉ**.
+4. **Báo cáo Kiểm toán QC:** Biên bản audit 20% + Honeypot 5%, xác nhận $\text{Miss Rate}_{\text{PII}} \le 0.001\%$.
+5. **Dataset Card Chuẩn hóa:** Khớp 5 chỉ số Loss-Check, công bố ODD & Known Limitations (kính bẩn > 30%, tuyết).
 
 </div>
 <div>
